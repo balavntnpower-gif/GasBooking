@@ -96,7 +96,6 @@
             font-size: 0.9rem;
             white-space: nowrap;
         }
-        /* नया ऑर्डर बटन - Header के बीच में */
         .new-order-header-btn {
             background: white;
             color: #f5576c;
@@ -219,7 +218,6 @@
             border-bottom: 1px solid #e2e8f0;
             font-size: 0.65rem;
         }
-        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -339,15 +337,15 @@
             overflow-y: auto;
         }
         .orders-list h3 {
-            font-size: 0.65rem;
-            margin-bottom: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 5px;
         }
         .order-item {
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 10px;
-            padding: 5px;
-            margin-bottom: 5px;
+            padding: 8px;
+            margin-bottom: 8px;
         }
         .order-item.old-customer {
             border: 2px solid #dc2626;
@@ -356,41 +354,53 @@
         .old-badge {
             background: #dc2626;
             color: white;
-            padding: 1px 5px;
-            border-radius: 12px;
-            font-size: 0.5rem;
-            margin-left: 4px;
+            padding: 2px 8px;
+            border-radius: 16px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-left: 6px;
         }
         .order-header {
             display: flex;
             justify-content: space-between;
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             align-items: center;
+            margin-bottom: 6px;
         }
         .order-details {
-            font-size: 0.55rem;
-            color: #4b5563;
-            margin-top: 3px;
-            line-height: 1.3;
+            font-size: 0.7rem;
+            color: #1f2937;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        /* यहाँ consumerNo और mobile बोल्ड और बड़े किए */
+        .order-details strong, 
+        .order-details .consumer-bold, 
+        .order-details .mobile-bold {
+            font-weight: bold;
+            font-size: 0.75rem;
+            color: #1e3a8a;
         }
         .status {
-            padding: 1px 6px;
+            padding: 2px 8px;
             border-radius: 20px;
-            font-size: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: bold;
         }
         .status-pending { background: #fef3c7; color: #92400e; }
         .status-processing { background: #dbeafe; color: #1e40af; }
         .status-delivered { background: #d1fae5; color: #065f46; }
         .action-btns {
             display: flex;
-            gap: 4px;
-            margin-top: 4px;
+            gap: 6px;
+            margin-top: 8px;
             flex-wrap: wrap;
         }
         .action-btn {
-            padding: 3px 8px;
-            font-size: 0.55rem;
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            font-weight: bold;
             width: auto;
             border-radius: 20px;
             cursor: pointer;
@@ -403,7 +413,7 @@
         .nav {
             display: flex;
             gap: 3px;
-            padding: 4px 8px;
+            padding: 6px 8px;
             background: white;
             border-top: 1px solid #e5e7eb;
             flex-shrink: 0;
@@ -413,8 +423,9 @@
             background: #f1f5f9;
             color: #334155;
             flex: 1;
-            padding: 3px 4px;
-            font-size: 0.55rem;
+            padding: 5px 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
             border: none;
             border-radius: 20px;
             cursor: pointer;
@@ -427,7 +438,7 @@
             text-align: center;
             padding: 15px;
             color: #94a3b8;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
         }
         .file-input {
             display: none;
@@ -456,7 +467,6 @@
 <div id="mainApp" class="app" style="display: none;">
     <div class="header">
         <h1>🚚 KARTIKEY BHARAT GAS</h1>
-        <!-- 🛒 नया ऑर्डर बटन - बीच में -->
         <button class="new-order-header-btn" id="newOrderHeaderBtn">➕ नया ऑर्डर</button>
         <div class="user-info">
             <span id="userRoleBadge"></span>
@@ -516,7 +526,6 @@
     </div>
 </div>
 
-<!-- Modal for New Order -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <h3>🛒 नया ऑर्डर</h3>
@@ -547,7 +556,7 @@
     ];
 
     function initDB() {
-        const req = indexedDB.open('GasDeliveryDB', 21);
+        const req = indexedDB.open('GasDeliveryDB', 22);
         req.onupgradeneeded = (e) => {
             db = e.target.result;
             if (!db.objectStoreNames.contains('orders')) {
@@ -743,7 +752,6 @@
 
     document.getElementById('clearAllDataBtn')?.addEventListener('click', clearAllData);
 
-    // नया ऑर्डर बटन (Header में)
     const modal = document.getElementById('orderModal');
     const newOrderBtn = document.getElementById('newOrderHeaderBtn');
     
@@ -780,7 +788,6 @@
         };
     };
 
-    // Search + Filter + Display
     const searchInput = document.getElementById('searchInput');
     const suggestionsDiv = document.getElementById('suggestions');
     searchInput.addEventListener('input', (e) => {
@@ -820,15 +827,35 @@
     function deleteOrder(id) { if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन'); if (confirm('हटाएं?')) { db.transaction(['orders'],'readwrite').objectStore('orders').delete(id).onsuccess = () => { loadOrders(); updateStats(); }; } }
 
     function loadOrders() { if (!db) return; db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => { allOrders = e.target.result || []; displayFilteredOrders(); updateStats(); }; }
+    
     function renderOrders(orders) {
         const container = document.getElementById('ordersContainer');
         if (!orders.length) { container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>'; return; }
         container.innerHTML = orders.map(order => {
             const isOld = isCustomerOld(order.customerName, order.mobile, orders);
+            const dscDisplay = order.dscCode ? `🔑 DSC: ${escapeHtml(order.dscCode)}` : '🔑 DSC: ⏳ अभी नहीं डाला';
             return `<div class="order-item ${isOld ? 'old-customer' : ''}">
-                <div class="order-header"><span>👤 ${escapeHtml(order.customerName)} ${isOld ? '<span class="old-badge">⚠️ 30+ दिन</span>' : ''}</span><span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span></div>
-                <div class="order-details">🆔 ${escapeHtml(order.consumerNo)}<br>${order.dscCode ? `🔑 DSC: ${escapeHtml(order.dscCode)}<br>` : ''}📞 ${escapeHtml(order.mobile)}<br>📍 ${escapeHtml(order.address)}<br>🎯 ${order.cylinderType} - ₹${order.price}<br>${order.remark ? `📝 नोट: ${escapeHtml(order.remark)}<br>` : ''}${order.deliveryRemark ? `✅ रिमार्क: ${escapeHtml(order.deliveryRemark)}<br>` : ''}📅 ${new Date(order.date).toLocaleString('hi-IN')}${order.deliveredDate ? `<br>📅 डिलीवरी: ${new Date(order.deliveredDate).toLocaleString('hi-IN')}` : ''}</div>
-                <div class="action-btns">${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}<button class="action-btn call-btn" data-mobile="${order.mobile}" data-action="call">📞 Call</button>${currentUser?.role === 'admin' ? `<button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>` : ''}</div>
+                <div class="order-header">
+                    <span><strong>👤 ${escapeHtml(order.customerName)}</strong> ${isOld ? '<span class="old-badge">⚠️ 30+ दिन</span>' : ''}</span>
+                    <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
+                </div>
+                <div class="order-details">
+                    <div><strong>🆔 कंज्यूमर:</strong> <strong style="font-size:0.8rem; color:#1e3a8a;">${escapeHtml(order.consumerNo)}</strong></div>
+                    <div>${dscDisplay}</div>
+                    <div><strong>📞 मोबाइल:</strong> <strong style="font-size:0.8rem; color:#1e3a8a;">${escapeHtml(order.mobile)}</strong></div>
+                    <div><strong>📍 पता:</strong> ${escapeHtml(order.address)}</div>
+                    <div><strong>🎯 सिलेंडर:</strong> ${order.cylinderType} - ₹${order.price}</div>
+                    ${order.remark ? `<div><strong>📝 नोट:</strong> ${escapeHtml(order.remark)}</div>` : ''}
+                    ${order.deliveryRemark ? `<div><strong>✅ डिलीवरी रिमार्क:</strong> ${escapeHtml(order.deliveryRemark)}</div>` : ''}
+                    <div><strong>📅 ऑर्डर तारीख:</strong> ${new Date(order.date).toLocaleString('hi-IN')}</div>
+                    ${order.deliveredDate ? `<div><strong>📅 डिलीवरी तारीख:</strong> ${new Date(order.deliveredDate).toLocaleString('hi-IN')}</div>` : ''}
+                </div>
+                <div class="action-btns">
+                    ${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}
+                    ${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}
+                    <button class="action-btn call-btn" data-mobile="${order.mobile}" data-action="call">📞 Call</button>
+                    ${currentUser?.role === 'admin' ? `<button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>` : ''}
+                </div>
             </div>`;
         }).join('');
         document.querySelectorAll('.action-btn').forEach(btn => btn.onclick = () => { const act = btn.dataset.action; if (act === 'processing') moveToProcessing(parseInt(btn.dataset.id)); else if (act === 'deliver') moveToDelivered(parseInt(btn.dataset.id)); else if (act === 'delete') deleteOrder(parseInt(btn.dataset.id)); else if (act === 'call') makeCall(btn.dataset.mobile); });
