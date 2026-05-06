@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>गैस डिलीवरी | कस्टमर बेस 25+ सिस्टम</title>
+    <style>
+        /* सारा CSS पहले जैसा ही रहेगा - यहाँ नहीं दोहरा रहा हूँ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+        }
+        .login-container, .app {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .login-card {
+            padding: 30px 24px;
+            text-align: center;
+        }
+        .login-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 14px;
+            margin: 12px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            font-size: 1rem;
+            outline: none;
+            background: #f8fafc;
+        }
+        .login-card button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+        .login-card .restore-btn-login {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            margin-top: 12px;
+        }
+        .error-msg {
+            color: #dc2626;
+            font-size: 0.8rem;
+            margin-top: 12px;
+            display: none;
+        }
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .header h1 {
+            font-size: 1.2rem;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+        .logout-btn {
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 5px;
+            margin: 8px 10px;
+            flex-shrink: 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-card small {
+            font-size: 8px;
+        }
+        .stat-card h3 {
+            font-size: 1rem;
+        }
+        .stat-card.warning {
+            background: linear-gradient(135deg, #f59e0b, #dc2626);
+        }
+        .balance-card {
+            background: #fef3c7;
+            margin: 4px 10px;
+            padding: 6px 10px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        .search-container {
+            margin: 5px 10px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .search-box {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 5px 10px;
+            border-radius: 35px;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 6px;
+            font-size: 0.75rem;
+            outline: none;
+        }
+        .search-box button {
+            width: auto;
+            padding: 4px 12px;
+            background: #4f46e5;
+            border-radius: 25px;
+            font-size: 0.65rem;
+        }
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 130px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.7rem;
+        }
+        .order-form {
+            background: #f9fafb;
+            margin: 6px 10px;
+            padding: 8px;
+            border-radius: 16px;
+            flex-shrink: 0;
+        }
+        .order-form h3 {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+        .form-group {
+            margin-bottom: 5px;
+        }
+        .form-group label {
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        textarea {
+            height: 32px;
+            resize: none;
+        }
+        .btn-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 5px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.65rem;
+            cursor: pointer;
+            flex: 1;
+        }
+        .excel-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .backup-btn {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+        .restore-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        .clear-btn {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+        .admin-panel {
+            background: #f1f5f9;
+            margin: 5px 10px;
+            padding: 6px;
+            border-radius: 14px;
+            flex-shrink: 0;
+        }
+        .admin-panel h4 {
+            font-size: 0.7rem;
+            margin-bottom: 4px;
+        }
+        .agent-row {
+            display: flex;
+            gap: 5px;
+        }
+        .agent-row input {
+            flex: 1;
+            padding: 4px 6px;
+            border-radius: 25px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.65rem;
+        }
+        .small-btn {
+            background: #4f46e5;
+            padding: 4px 8px;
+            font-size: 0.6rem;
+        }
+        .agent-list {
+            font-size: 0.6rem;
+            margin-top: 6px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .agent-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .delete-agent-btn {
+            background: #ef4444;
+            padding: 2px 8px;
+            border-radius: 15px;
+            font-size: 0.55rem;
+            width: auto;
+        }
+        .orders-list {
+            margin: 5px 10px 8px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .order-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 6px;
+            margin-bottom: 6px;
+        }
+        .order-item.old-customer {
+            border: 2px solid #dc2626;
+            background: #fef2f2;
+        }
+        .old-badge {
+            background: #dc2626;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 15px;
+            font-size: 0.55rem;
+            margin-left: 5px;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 0.7rem;
+            align-items: center;
+        }
+        .order-details {
+            font-size: 0.6rem;
+            color: #4b5563;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+        .status {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.55rem;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-processing { background: #dbeafe; color: #1e40af; }
+        .status-delivered { background: #d1fae5; color: #065f46; }
+        .action-btns {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            padding: 2px 8px;
+            font-size: 0.55rem;
+            width: auto;
+            border-radius: 20px;
+        }
+        .processing-btn { background: #10b981; }
+        .deliver-btn { background: #3b82f6; }
+        .delete-btn { background: #ef4444; }
+        .dsc-badge {
+            background: #f3e8ff;
+            padding: 2px 5px;
+            border-radius: 12px;
+            font-size: 0.5rem;
+        }
+        .nav {
+            display: flex;
+            gap: 4px;
+            padding: 5px 10px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+        .nav-btn {
+            background: #f1f5f9;
+            color: #334155;
+            flex: 1;
+            padding: 4px;
+            font-size: 0.6rem;
+        }
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            font-size: 0.7rem;
+        }
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-container">
+    <div class="login-card">
+        <h2>🚚 गैस डिलीवरी</h2>
+        <p style="margin-bottom: 20px;">लॉगिन करें</p>
+        <input type="text" id="loginUsername" placeholder="यूजरनेम" autocomplete="off">
+        <input type="password" id="loginPassword" placeholder="पासवर्ड">
+        <button id="doLoginBtn">लॉगिन करें</button>
+        <button id="restoreBtnLogin" class="restore-btn-login">🔄 रिस्टोर डेटा (JSON)</button>
+        <div id="loginError" class="error-msg">गलत यूजरनेम या पासवर्ड</div>
+    </div>
+    <input type="file" id="restoreFileInputLogin" accept=".json" style="display:none">
+</div>
+
+<div id="mainApp" class="app" style="display: none;">
+    <div class="header">
+        <h1>🚚 गैस डिलीवरी</h1>
+        <div class="user-info">
+            <span id="userRoleBadge"></span>
+            <span class="logout-btn" id="logoutBtn">लॉगआउट</span>
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card"><small>📦 डिलीवर</small><h3 id="totalDelivered">0</h3></div>
+        <div class="stat-card"><small>👥 कंज्यूमर</small><h3 id="totalConsumers">0</h3></div>
+        <div class="stat-card"><small>🔑 DSC</small><h3 id="totalDscCodes">0</h3></div>
+        <div class="stat-card warning"><small>⚠️ 25+ कस्टमर</small><h3 id="totalOldCustomers">0</h3></div>
+        <div class="stat-card"><small>📊 कुल</small><h3 id="totalOrders">0</h3></div>
+    </div>
+    <div class="balance-card"><span>📋 मौजूदा फिल्टर</span><strong id="currentFilterLabel">सभी</strong></div>
+
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 किसी भी ऑर्डर में नाम खोजें..." autocomplete="off">
+            <button id="searchBtn">खोजें</button>
+            <button id="clearSearchBtn" style="background:#6b7280;">साफ करें</button>
+        </div>
+        <div id="suggestions" class="suggestions"></div>
+    </div>
+
+    <div class="order-form">
+        <h3>🛒 नया ऑर्डर</h3>
+        <div class="form-row">
+            <div class="form-group"><label>कंज्यूमर नंबर</label><input id="consumerNo" placeholder="1234567890"></div>
+            <div class="form-group"><label>मोबाइल</label><input id="mobile" placeholder="9876543210"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group"><label>ग्राहक नाम</label><input id="customerName" placeholder="राम कुमार"></div>
+            <div class="form-group"><label>सिलेंडर</label>
+                <select id="cylinderType">
+                    <option value="14.2kg">14.2 kg (₹985)</option>
+                    <option value="19kg">19 kg (₹3050)</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group"><label>पता</label><input id="address" placeholder="मेन रोड, दिल्ली"></div>
+        <div class="form-group"><label>रिमार्क</label><textarea id="remark" placeholder="नोट्स..."></textarea></div>
+        <div class="btn-row">
+            <button id="addOrderBtn">✅ ऑर्डर करें</button>
+            <button id="exportExcelBtn" class="excel-btn">📊 एक्सेल</button>
+            <button id="backupBtn" class="backup-btn">💾 बैकअप</button>
+            <button id="restoreBtn" class="restore-btn">🔄 रिस्टोर</button>
+            <button id="clearAllDataBtn" class="clear-btn">🗑️ सब साफ करें</button>
+        </div>
+        <input type="file" id="restoreFileInput" accept=".json" style="display:none">
+    </div>
+
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <h4>👑 एडमिन: नया डिलीवरी एजेंट बनाएं</h4>
+        <div class="agent-row">
+            <input type="text" id="newAgentUser" placeholder="यूजरनेम">
+            <input type="text" id="newAgentPass" placeholder="पासवर्ड">
+            <button id="createAgentBtn" class="small-btn">➕ बनाएं</button>
+        </div>
+        <div id="agentListDisplay" class="agent-list">📋 एजेंट लिस्ट: </div>
+    </div>
+
+    <div class="orders-list">
+        <h3 style="font-size:0.75rem; margin-bottom:4px;">📋 ऑर्डर लिस्ट <span style="color:#dc2626;">(लाल = कस्टमर 25+ दिन से कोई नया ऑर्डर नहीं)</span></h3>
+        <div id="ordersContainer"></div>
+    </div>
+
+    <div class="nav">
+        <button class="nav-btn active" data-filter="all">सभी</button>
+        <button class="nav-btn" data-filter="pending">⏳ पेंडिंग</button>
+        <button class="nav-btn" data-filter="processing">🚚 प्रोसेसिंग</button>
+        <button class="nav-btn" data-filter="delivered">✅ डिलीवर</button>
+        <button class="nav-btn" data-filter="old25">⚠️ 25+ कस्टमर</button>
+    </div>
+</div>
+
+<script>
+    let db;
+    let currentUser = null;
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
+    let allOrders = [];
+
+    const cylinderPrices = { '14.2kg': 985, '19kg': 3050 };
+    const ADMIN_USER = { username: 'Hindu', password: 'Lion', role: 'admin' };
+    const DEFAULT_AGENTS = [
+        { username: 'Ramesh', password: 'ram123', role: 'agent' },
+        { username: 'Suresh', password: 'sur123', role: 'agent' }
+    ];
+
+    // ✅ localStorage से session चेक करें (ब्राउज़र बंद करने पर भी बना रहेगा)
+    function checkSession() {
+        const savedUser = localStorage.getItem('currentUser');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            showApp();
+        }
+    }
+
+    function initDB() {
+        const req = indexedDB.open('GasDeliveryDB', 15);
+        req.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains('orders')) {
+                const orderStore = db.createObjectStore('orders', { keyPath: 'id', autoIncrement: true });
+                orderStore.createIndex('status', 'status');
+                orderStore.createIndex('customerName', 'customerName');
+                orderStore.createIndex('mobile', 'mobile');
+            }
+            if (!db.objectStoreNames.contains('customers')) {
+                db.createObjectStore('customers', { keyPath: 'mobile' });
+            }
+            if (!db.objectStoreNames.contains('dscCodes')) {
+                db.createObjectStore('dscCodes', { keyPath: 'dscCode' });
+            }
+            if (!db.objectStoreNames.contains('agents')) {
+                const agentStore = db.createObjectStore('agents', { keyPath: 'username' });
+                DEFAULT_AGENTS.forEach(agent => agentStore.put(agent));
+            }
+        };
+        req.onsuccess = (e) => {
+            db = e.target.result;
+            checkSession();
+        };
+        req.onerror = (e) => console.log('DB Error', e);
+    }
+    initDB();
+
+    // कस्टमर का सबसे नया ऑर्डर ढूंढने का फंक्शन
+    function getCustomerLastOrderDate(customerName, mobile) {
+        const customerOrders = allOrders.filter(order => 
+            order.customerName === customerName || order.mobile === mobile
+        );
+        if (customerOrders.length === 0) return null;
+        
+        const latestOrder = customerOrders.reduce((latest, current) => 
+            new Date(current.date) > new Date(latest.date) ? current : latest
+        );
+        return latestOrder.date;
+    }
+
+    // चेक करें कि कस्टमर 25+ दिन पुराना है या नहीं (उसके सबसे नए ऑर्डर के हिसाब से)
+    function isCustomerOld(customerName, mobile) {
+        const lastOrderDate = getCustomerLastOrderDate(customerName, mobile);
+        if (!lastOrderDate) return false;
+        
+        const lastOrderDateObj = new Date(lastOrderDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - lastOrderDateObj);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays >= 25;
+    }
+
+    // कितने कस्टमर 25+ दिन पुराने हैं (यूनिक कस्टमर के हिसाब से)
+    function getUniqueOldCustomersCount() {
+        const uniqueCustomers = new Map();
+        allOrders.forEach(order => {
+            const key = order.mobile;
+            if (!uniqueCustomers.has(key) || new Date(order.date) > new Date(uniqueCustomers.get(key).date)) {
+                uniqueCustomers.set(key, { name: order.customerName, mobile: order.mobile, date: order.date });
+            }
+        });
+        
+        let oldCount = 0;
+        for (let customer of uniqueCustomers.values()) {
+            const diffDays = Math.ceil((new Date() - new Date(customer.date)) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 25) oldCount++;
+        }
+        return oldCount;
+    }
+
+    // Common Restore Function
+    function restoreDataFromJson(file, callback) {
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            try {
+                const backupData = JSON.parse(event.target.result);
+                
+                if (!backupData.orders || !backupData.customers || !backupData.dscCodes || !backupData.agents) {
+                    alert('❌ गलत बैकअप फाइल! कृपया सही फाइल चुनें।');
+                    if (callback) callback(false);
+                    return;
+                }
+                
+                const confirmRestore = confirm('⚠️ क्या आप डेटा रिस्टोर करना चाहते हैं? मौजूदा सारा डेटा डिलीट हो जाएगा!');
+                if (!confirmRestore) {
+                    if (callback) callback(false);
+                    return;
+                }
+                
+                const clearTx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readwrite');
+                await Promise.all([
+                    clearTx.objectStore('orders').clear(),
+                    clearTx.objectStore('customers').clear(),
+                    clearTx.objectStore('dscCodes').clear(),
+                    clearTx.objectStore('agents').clear()
+                ]);
+                
+                const restoreTx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readwrite');
+                
+                backupData.orders.forEach(order => restoreTx.objectStore('orders').add(order));
+                backupData.customers.forEach(customer => restoreTx.objectStore('customers').add(customer));
+                backupData.dscCodes.forEach(dsc => restoreTx.objectStore('dscCodes').add(dsc));
+                backupData.agents.forEach(agent => restoreTx.objectStore('agents').add(agent));
+                
+                restoreTx.oncomplete = () => {
+                    alert('✅ डेटा सफलतापूर्वक रिस्टोर हो गया!');
+                    if (callback) callback(true);
+                };
+                restoreTx.onerror = () => {
+                    alert('❌ रिस्टोर करते समय त्रुटि!');
+                    if (callback) callback(false);
+                };
+            } catch (err) {
+                alert('❌ गलत बैकअप फाइल!');
+                if (callback) callback(false);
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // Clear All Data Function
+    function clearAllData() {
+        if (currentUser?.role !== 'admin') {
+            alert('❌ सिर्फ एडमिन सारा डेटा साफ कर सकता है');
+            return;
+        }
+        
+        if (confirm('⚠️ क्या आप सारा डेटा (ऑर्डर, कंज्यूमर, DSC Codes, एजेंट) डिलीट करना चाहते हैं?\n\nयह क्रिया वापस नहीं ली जा सकती!')) {
+            const tx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readwrite');
+            tx.objectStore('orders').clear();
+            tx.objectStore('customers').clear();
+            tx.objectStore('dscCodes').clear();
+            tx.objectStore('agents').clear();
+            
+            setTimeout(() => {
+                const agentTx = db.transaction(['agents'], 'readwrite');
+                DEFAULT_AGENTS.forEach(agent => agentTx.objectStore('agents').put(agent));
+                agentTx.oncomplete = () => {
+                    alert('✅ सारा डेटा साफ हो गया! डिफॉल्ट एजेंट वापस जोड़ दिए गए हैं।');
+                    loadOrders();
+                    updateStats();
+                    if (currentUser?.role === 'admin') loadAgentList();
+                };
+            }, 100);
+        }
+    }
+
+    // Delete Agent Function
+    function deleteAgent(agentUsername) {
+        if (currentUser?.role !== 'admin') {
+            alert('❌ सिर्फ एडमिन एजेंट डिलीट कर सकता है');
+            return;
+        }
+        
+        if (DEFAULT_AGENTS.some(a => a.username === agentUsername)) {
+            alert('⚠️ डिफॉल्ट एजेंट को डिलीट नहीं किया जा सकता!');
+            return;
+        }
+        
+        if (confirm(`क्या आप एजेंट "${agentUsername}" को डिलीट करना चाहते हैं?`)) {
+            const tx = db.transaction(['agents'], 'readwrite');
+            tx.objectStore('agents').delete(agentUsername);
+            tx.oncomplete = () => {
+                alert(`✅ एजेंट "${agentUsername}" डिलीट हो गया`);
+                loadAgentList();
+            };
+        }
+    }
+
+    // Login Page Restore Button
+    document.getElementById('restoreBtnLogin').addEventListener('click', () => {
+        if (!db) {
+            alert('डेटाबेस लोड हो रहा है, कृपया कुछ सेकंड बाद प्रयास करें।');
+            return;
+        }
+        document.getElementById('restoreFileInputLogin').click();
+    });
+
+    document.getElementById('restoreFileInputLogin').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        restoreDataFromJson(file, (success) => {
+            if (success && currentUser) {
+                loadOrders();
+                updateStats();
+                if (currentUser?.role === 'admin') loadAgentList();
+            }
+        });
+        e.target.value = '';
+    });
+
+    document.getElementById('doLoginBtn').addEventListener('click', async () => {
+        const uname = document.getElementById('loginUsername').value.trim();
+        const pwd = document.getElementById('loginPassword').value.trim();
+        const errorDiv = document.getElementById('loginError');
+
+        if (uname === ADMIN_USER.username && pwd === ADMIN_USER.password) {
+            currentUser = { username: ADMIN_USER.username, role: 'admin' };
+            // ✅ localStorage में सेव करें
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showApp();
+            return;
+        }
+
+        if (db) {
+            const tx = db.transaction(['agents'], 'readonly');
+            const store = tx.objectStore('agents');
+            const request = store.get(uname);
+            request.onsuccess = () => {
+                const agent = request.result;
+                if (agent && agent.password === pwd && agent.role === 'agent') {
+                    currentUser = { username: agent.username, role: 'agent' };
+                    // ✅ localStorage में सेव करें
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showApp();
+                } else {
+                    errorDiv.style.display = 'block';
+                    setTimeout(() => errorDiv.style.display = 'none', 2000);
+                }
+            };
+        }
+    });
+
+    function showApp() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'flex';
+        document.getElementById('userRoleBadge').innerText = currentUser.role === 'admin' ? '👑 एडमिन' : '🚚 डिलीवरी एजेंट';
+
+        const adminPanel = document.getElementById('adminPanel');
+        if (currentUser.role === 'admin') {
+            adminPanel.style.display = 'block';
+            loadAgentList();
+        } else {
+            adminPanel.style.display = 'none';
+        }
+        loadOrders();
+        updateStats();
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        currentUser = null;
+        // ✅ localStorage से हटाएं
+        localStorage.removeItem('currentUser');
+        document.getElementById('loginScreen').style.display = 'block';
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('loginUsername').value = '';
+        document.getElementById('loginPassword').value = '';
+    });
+
+    function loadAgentList() {
+        if (!db) return;
+        const tx = db.transaction(['agents'], 'readonly');
+        tx.objectStore('agents').getAll().onsuccess = (e) => {
+            const agents = e.target.result;
+            let html = '';
+            agents.forEach(agent => {
+                const isDefault = DEFAULT_AGENTS.some(a => a.username === agent.username);
+                if (isDefault) {
+                    html += `<div class="agent-item"><span>🔑 ${agent.username} (डिफॉल्ट)</span></div>`;
+                } else {
+                    html += `<div class="agent-item">
+                                <span>🔑 ${agent.username}</span>
+                                <button class="delete-agent-btn" data-agent="${agent.username}">🗑️ हटाएं</button>
+                             </div>`;
+                }
+            });
+            document.getElementById('agentListDisplay').innerHTML = html || '📋 कोई एजेंट नहीं';
+            
+            document.querySelectorAll('.delete-agent-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const agentName = btn.dataset.agent;
+                    deleteAgent(agentName);
+                    e.stopPropagation();
+                });
+            });
+        };
+    }
+
+    document.getElementById('createAgentBtn')?.addEventListener('click', () => {
+        if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन');
+        const newUser = document.getElementById('newAgentUser').value.trim();
+        const newPass = document.getElementById('newAgentPass').value.trim();
+        if (!newUser || !newPass) return alert('यूजरनेम और पासवर्ड दोनों दें');
+        const tx = db.transaction(['agents'], 'readwrite');
+        const store = tx.objectStore('agents');
+        store.get(newUser).onsuccess = (e) => {
+            if (e.target.result) return alert('यूजरनेम पहले से मौजूद');
+            store.add({ username: newUser, password: newPass, role: 'agent' });
+            tx.oncomplete = () => {
+                alert(`✅ एजेंट "${newUser}" बना दिया गया`);
+                document.getElementById('newAgentUser').value = '';
+                document.getElementById('newAgentPass').value = '';
+                loadAgentList();
+            };
+        };
+    });
+
+    document.getElementById('clearAllDataBtn').addEventListener('click', clearAllData);
+
+    document.getElementById('addOrderBtn').addEventListener('click', () => {
+        const consumerNo = document.getElementById('consumerNo').value.trim();
+        const customerName = document.getElementById('customerName').value.trim();
+        const mobile = document.getElementById('mobile').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const cylinderType = document.getElementById('cylinderType').value;
+        const remark = document.getElementById('remark').value;
+
+        if (!consumerNo || !customerName || !mobile || !address) {
+            alert('सभी जरूरी फील्ड भरें');
+            return;
+        }
+
+        const newOrder = {
+            consumerNo, customerName, mobile, address, cylinderType,
+            price: cylinderPrices[cylinderType],
+            status: 'pending',
+            remark: remark || '',
+            dscCode: null,
+            date: new Date().toISOString(),
+            deliveredDate: null,
+            deliveryRemark: null
+        };
+
+        const tx = db.transaction(['orders'], 'readwrite');
+        tx.objectStore('orders').add(newOrder).onsuccess = () => {
+            alert('✅ ऑर्डर जमा हुआ - पेंडिंग में है');
+            document.getElementById('consumerNo').value = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('mobile').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('remark').value = '';
+
+            const custTx = db.transaction(['customers'], 'readwrite');
+            custTx.objectStore('customers').put({ mobile, name: customerName, consumerNo, lastOrder: new Date().toISOString() });
+            loadOrders();
+            updateStats();
+        };
+    });
+
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        if (term.length < 1) {
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+        
+        const uniqueNames = [...new Set(allOrders.map(o => o.customerName).filter(n => n))];
+        const matches = uniqueNames.filter(name => name.toLowerCase().includes(term)).slice(0, 5);
+        
+        if (matches.length > 0) {
+            suggestionsDiv.innerHTML = matches.map(name => 
+                `<div class="suggestion-item" data-name="${name}">🔍 ${name}</div>`
+            ).join('');
+            suggestionsDiv.style.display = 'block';
+            
+            document.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.dataset.name;
+                    suggestionsDiv.style.display = 'none';
+                    document.getElementById('searchBtn').click();
+                });
+            });
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    });
+
+    document.getElementById('searchBtn').addEventListener('click', () => {
+        currentSearchTerm = searchInput.value.trim().toLowerCase();
+        suggestionsDiv.style.display = 'none';
+        displayFilteredOrders();
+    });
+
+    document.getElementById('clearSearchBtn').addEventListener('click', () => {
+        searchInput.value = '';
+        currentSearchTerm = '';
+        suggestionsDiv.style.display = 'none';
+        displayFilteredOrders();
+    });
+
+    function displayFilteredOrders() {
+        let filtered = [...allOrders];
+        
+        if (currentSearchTerm) {
+            filtered = filtered.filter(order => 
+                order.customerName.toLowerCase().includes(currentSearchTerm)
+            );
+        }
+        
+        if (currentFilter === 'pending') {
+            filtered = filtered.filter(order => order.status === 'pending');
+        } else if (currentFilter === 'processing') {
+            filtered = filtered.filter(order => order.status === 'processing');
+        } else if (currentFilter === 'delivered') {
+            filtered = filtered.filter(order => order.status === 'delivered');
+        } else if (currentFilter === 'old25') {
+            // कस्टमर के हिसाब से फिल्टर: सिर्फ उन कस्टमर के ऑर्डर दिखाएं जो 25+ दिन पुराने हैं
+            const oldCustomers = new Set();
+            filtered.forEach(order => {
+                if (isCustomerOld(order.customerName, order.mobile)) {
+                    oldCustomers.add(order.mobile);
+                }
+            });
+            filtered = filtered.filter(order => oldCustomers.has(order.mobile));
+        }
+        
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        renderOrders(filtered);
+    }
+
+    function moveToProcessing(orderId) {
+        const dscInput = prompt("🔑 प्रोसेसिंग में भेजने के लिए DSC Code दर्ज करें:");
+        if (!dscInput) return;
+
+        const tx = db.transaction(['orders'], 'readwrite');
+        const store = tx.objectStore('orders');
+        store.get(orderId).onsuccess = (e) => {
+            const order = e.target.result;
+            if (!order.dscCode) {
+                order.dscCode = dscInput.toUpperCase();
+                const dscTx = db.transaction(['dscCodes'], 'readwrite');
+                dscTx.objectStore('dscCodes').put({ dscCode: dscInput.toUpperCase() });
+            }
+            if (order.dscCode !== dscInput.toUpperCase()) {
+                alert(`❌ DSC Code गलत!`);
+                return;
+            }
+            order.status = 'processing';
+            store.put(order);
+            alert(`✅ ऑर्डर प्रोसेसिंग में भेज दिया`);
+            loadOrders();
+            updateStats();
+        };
+    }
+
+    function moveToDelivered(orderId) {
+        const deliveryRemark = prompt("📝 डिलीवरी के समय रिमार्क लिखें (वैकल्पिक):");
+        
+        const tx = db.transaction(['orders'], 'readwrite');
+        const store = tx.objectStore('orders');
+        store.get(orderId).onsuccess = (e) => {
+            const order = e.target.result;
+            if (order.status !== 'processing') return alert("केवल प्रोसेसिंग वाला ऑर्डर डिलीवर हो सकता है");
+            order.status = 'delivered';
+            order.deliveredDate = new Date().toISOString();
+            order.deliveryRemark = deliveryRemark || '';
+            store.put(order);
+            alert("✅ ऑर्डर डिलीवर हो गया");
+            loadOrders();
+            updateStats();
+        };
+    }
+
+    function deleteOrder(orderId) {
+        if (currentUser?.role !== 'admin') {
+            alert("❌ डिलीट करने की अनुमति सिर्फ एडमिन को है!");
+            return;
+        }
+        if (confirm("क्या आप यह ऑर्डर डिलीट करना चाहते हैं?")) {
+            const tx = db.transaction(['orders'], 'readwrite');
+            tx.objectStore('orders').delete(orderId).onsuccess = () => {
+                alert("🗑️ ऑर्डर डिलीट हो गया");
+                loadOrders();
+                updateStats();
+            };
+        }
+    }
+
+    function loadOrders() {
+        if (!db) return;
+        const tx = db.transaction(['orders'], 'readonly');
+        tx.objectStore('orders').getAll().onsuccess = (e) => {
+            allOrders = e.target.result || [];
+            displayFilteredOrders();
+            updateStats();
+        };
+    }
+
+    function renderOrders(orders) {
+        const container = document.getElementById('ordersContainer');
+        if (!orders.length) {
+            container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>';
+            return;
+        }
+
+        container.innerHTML = orders.map(order => {
+            const isCustomerOldFlag = isCustomerOld(order.customerName, order.mobile);
+            const oldClass = isCustomerOldFlag ? 'old-customer' : '';
+            return `
+            <div class="order-item ${oldClass}">
+                <div class="order-header">
+                    <span>👤 ${escapeHtml(order.customerName)} ${isCustomerOldFlag ? '<span class="old-badge">⚠️ 25+ दिन से कोई नया ऑर्डर नहीं</span>' : ''}</span>
+                    <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
+                </div>
+                <div class="order-details">
+                    🆔 कंज्यूमर: ${escapeHtml(order.consumerNo)}<br>
+                    ${order.dscCode ? `🔑 DSC: <span class="dsc-badge">${escapeHtml(order.dscCode)}</span><br>` : '🔑 DSC: ⏳ अभी नहीं डाला<br>'}
+                    📞 ${escapeHtml(order.mobile)}<br>
+                    📍 ${escapeHtml(order.address)}<br>
+                    🎯 ${order.cylinderType} - ₹${order.price}<br>
+                    ${order.remark ? `📝 नोट: ${escapeHtml(order.remark)}<br>` : ''}
+                    ${order.deliveryRemark ? `✅ डिलीवरी रिमार्क: ${escapeHtml(order.deliveryRemark)}<br>` : ''}
+                    📅 ऑर्डर तारीख: ${new Date(order.date).toLocaleString('hi-IN')}
+                    ${order.deliveredDate ? `<br>📅 डिलीवरी तारीख: ${new Date(order.deliveredDate).toLocaleString('hi-IN')}` : ''}
+                </div>
+                <div class="action-btns">
+                    ${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}
+                    ${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}
+                    <button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>
+                </div>
+            </div>
+        `}).join('');
+
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.removeEventListener('click', handleAction);
+            btn.addEventListener('click', handleAction);
+        });
+    }
+
+    function handleAction(e) {
+        const btn = e.currentTarget;
+        const id = parseInt(btn.dataset.id);
+        const action = btn.dataset.action;
+        if (action === 'processing') moveToProcessing(id);
+        else if (action === 'deliver') moveToDelivered(id);
+        else if (action === 'delete') deleteOrder(id);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function updateStats() {
+        if (!db) return;
+        const tx = db.transaction(['orders'], 'readonly');
+        tx.objectStore('orders').getAll().onsuccess = (e) => {
+            const orders = e.target.result;
+            const delivered = orders.filter(o => o.status === 'delivered').length;
+            document.getElementById('totalDelivered').innerText = delivered;
+            document.getElementById('totalOrders').innerText = orders.length;
+        };
+        const custTx = db.transaction(['customers'], 'readonly');
+        custTx.objectStore('customers').count().onsuccess = (e) => document.getElementById('totalConsumers').innerText = e.target.result;
+        const dscTx = db.transaction(['dscCodes'], 'readonly');
+        dscTx.objectStore('dscCodes').count().onsuccess = (e) => document.getElementById('totalDscCodes').innerText = e.target.result;
+        
+        // यूनिक कस्टमर के हिसाब से 25+ की गिनती
+        const oldCustomersCount = getUniqueOldCustomersCount();
+        document.getElementById('totalOldCustomers').innerText = oldCustomersCount;
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            let filterName = '';
+            if (currentFilter === 'all') filterName = 'सभी';
+            else if (currentFilter === 'pending') filterName = 'पेंडिंग';
+            else if (currentFilter === 'processing') filterName = 'प्रोसेसिंग';
+            else if (currentFilter === 'delivered') filterName = 'डिलीवर';
+            else if (currentFilter === 'old25') filterName = '⚠️ 25+ कस्टमर';
+            document.getElementById('currentFilterLabel').innerText = filterName;
+            displayFilteredOrders();
+        });
+    });
+
+    // Backup Function
+    document.getElementById('backupBtn').addEventListener('click', async () => {
+        if (!db) return;
+        const tx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readonly');
+        
+        const orders = await new Promise((resolve) => {
+            tx.objectStore('orders').getAll().onsuccess = (e) => resolve(e.target.result);
+        });
+        const customers = await new Promise((resolve) => {
+            tx.objectStore('customers').getAll().onsuccess = (e) => resolve(e.target.result);
+        });
+        const dscCodes = await new Promise((resolve) => {
+            tx.objectStore('dscCodes').getAll().onsuccess = (e) => resolve(e.target.result);
+        });
+        const agents = await new Promise((resolve) => {
+            tx.objectStore('agents').getAll().onsuccess = (e) => resolve(e.target.result);
+        });
+        
+        const backupData = {
+            version: 1,
+            date: new Date().toISOString(),
+            orders: orders,
+            customers: customers,
+            dscCodes: dscCodes,
+            agents: agents
+        };
+        
+        const jsonStr = JSON.stringify(backupData, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `gas_delivery_backup_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        alert('✅ बैकअप सफलतापूर्वक सेव हो गया!');
+    });
+
+    // Restore Function (inside app)
+    document.getElementById('restoreBtn').addEventListener('click', () => {
+        document.getElementById('restoreFileInput').click();
+    });
+
+    document.getElementById('restoreFileInput').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        restoreDataFromJson(file, (success) => {
+            if (success) {
+                loadOrders();
+                updateStats();
+                if (currentUser?.role === 'admin') loadAgentList();
+            }
+        });
+        e.target.value = '';
+    });
+
+    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+        const tx = db.transaction(['orders'], 'readonly');
+        tx.objectStore('orders').getAll().onsuccess = (e) => {
+            const orders = e.target.result;
+            let html = `<html><head><meta charset="UTF-8"><title>Gas_Report</title><style>body { font-family: 'Times New Roman', Times, serif; } table { border-collapse: collapse; width:100%; } th, td { border:1px solid #000; padding: 6px; font-family: 'Times New Roman', Times, serif; } th { background: #4f46e5; color:white; } .old-row { background: #fee2e2; }</style></head><body><h2>गैस डिलीवरी रिपोर्ट</h2><table><thead><tr><th>कंज्यूमर नंबर</th><th>DSC Code</th><th>ग्राहक नाम</th><th>मोबाइल</th><th>पता</th><th>सिलेंडर</th><th>कीमत</th><th>स्टेटस</th><th>रिमार्क</th><th>डिलीवरी तारीख</th><th>डिलीवरी रिमार्क</th><th>ऑर्डर तारीख</th><th>25+ दिन (कस्टमर)</th></tr></thead><tbody>`;
+            orders.forEach(o => {
+                const isOld = isCustomerOld(o.customerName, o.mobile);
+                const rowClass = isOld ? 'class="old-row"' : '';
+                html += `<tr ${rowClass}>
+                    <td>${escapeHtml(o.consumerNo || '')}</td>
+                    <td>${escapeHtml(o.dscCode || '')}</td>
+                    <td>${escapeHtml(o.customerName || '')}</td>
+                    <td>${escapeHtml(o.mobile || '')}</td>
+                    <td>${escapeHtml(o.address || '')}</td>
+                    <td>${o.cylinderType || ''}</td>
+                    <td>${o.price || ''}</td>
+                    </tr>${o.status === 'pending' ? 'पेंडिंग' : (o.status === 'processing' ? 'प्रोसेसिंग' : 'डिलीवर')}</td>
+                    <td>${escapeHtml(o.remark || '')}</td>
+                    <td>${o.deliveredDate ? new Date(o.deliveredDate).toLocaleString('hi-IN') : '-'}</td>
+                    <td>${escapeHtml(o.deliveryRemark || '')}</td>
+                    <td>${new Date(o.date).toLocaleString('hi-IN')}</td>
+                    <td>${isOld ? 'हाँ (25+ दिन से कोई नया ऑर्डर नहीं)' : 'नहीं'}</td>
+                <tr>`;
+            });
+            html += `</tbody></table><p>जनरेटेड: ${new Date().toLocaleString()}</p></body></html>`;
+            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `gas_delivery_${Date.now()}.xls`;
+            link.click();
+            alert('✅ एक्सेल (Times New Roman) डाउनलोड हुआ');
+        };
+    });
+</script>
+</body>
+</html>
