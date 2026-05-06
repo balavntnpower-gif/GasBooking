@@ -374,12 +374,12 @@
             margin-top: 5px;
             line-height: 1.5;
         }
-        /* यहाँ consumerNo और mobile बोल्ड और बड़े किए */
-        .order-details strong, 
-        .order-details .consumer-bold, 
-        .order-details .mobile-bold {
+        .order-details strong {
             font-weight: bold;
-            font-size: 0.75rem;
+        }
+        .order-details .consumer-mob {
+            font-weight: bold;
+            font-size: 0.8rem;
             color: #1e3a8a;
         }
         .status {
@@ -454,8 +454,8 @@
     <div class="login-card">
         <h2>🚚 KARTIKEY BHARAT GAS</h2>
         <p style="margin-bottom: 15px;">लॉगिन करें</p>
-        <input type="text" id="loginUsername" placeholder="यूजरनेम" autocomplete="off">
-        <input type="password" id="loginPassword" placeholder="पासवर्ड">
+        <input type="text" id="loginUsername" placeholder="यूजरनेम" autocomplete="off" inputmode="text">
+        <input type="password" id="loginPassword" placeholder="पासवर्ड" inputmode="text">
         <div id="loadingMsg" class="loading-msg">⏳ डेटाबेस लोड हो रहा है...</div>
         <button id="doLoginBtn" style="display:none;">लॉगिन करें</button>
         <button id="restoreBtnLogin" class="restore-btn-login" style="display:none;">🔄 रिस्टोर</button>
@@ -495,7 +495,7 @@
 
     <div class="search-container">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 नाम / मोबाइल / कंज्यूमर नंबर से खोजें..." autocomplete="off">
+            <input type="text" id="searchInput" placeholder="🔍 नाम / मोबाइल / कंज्यूमर नंबर से खोजें..." autocomplete="off" inputmode="text">
             <button id="searchBtn">खोजें</button>
             <button id="clearSearchBtn" style="background:#6b7280;">साफ करें</button>
         </div>
@@ -505,8 +505,8 @@
     <div id="adminPanel" class="admin-panel" style="display: none;">
         <h4>👑 एडमिन: नया डिलीवरी एजेंट</h4>
         <div class="agent-row">
-            <input type="text" id="newAgentUser" placeholder="यूजरनेम">
-            <input type="text" id="newAgentPass" placeholder="पासवर्ड">
+            <input type="text" id="newAgentUser" placeholder="यूजरनेम" inputmode="text">
+            <input type="text" id="newAgentPass" placeholder="पासवर्ड" inputmode="text">
             <button id="createAgentBtn" class="small-btn">➕ बनाएं</button>
         </div>
         <div id="agentListDisplay" class="agent-list">📋 एजेंट लिस्ट: </div>
@@ -526,14 +526,15 @@
     </div>
 </div>
 
+<!-- Modal for New Order -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <h3>🛒 नया ऑर्डर</h3>
-        <div class="form-group"><label>कंज्यूमर नंबर</label><input id="modalConsumerNo" placeholder="1234567890"></div>
-        <div class="form-group"><label>मोबाइल</label><input id="modalMobile" placeholder="9876543210"></div>
-        <div class="form-group"><label>ग्राहक नाम</label><input id="modalCustomerName" placeholder="राम कुमार"></div>
+        <div class="form-group"><label>कंज्यूमर नंबर</label><input id="modalConsumerNo" placeholder="1234567890" inputmode="numeric" pattern="[0-9]*"></div>
+        <div class="form-group"><label>मोबाइल</label><input id="modalMobile" placeholder="9876543210" inputmode="tel"></div>
+        <div class="form-group"><label>ग्राहक नाम</label><input id="modalCustomerName" placeholder="राम कुमार" inputmode="text"></div>
         <div class="form-group"><label>सिलेंडर</label><select id="modalCylinderType"><option value="14.2kg">14.2 kg (₹985)</option><option value="19kg">19 kg (₹3050)</option></select></div>
-        <div class="form-group"><label>पता</label><input id="modalAddress" placeholder="मेन रोड, दिल्ली"></div>
+        <div class="form-group"><label>पता</label><input id="modalAddress" placeholder="मेन रोड, दिल्ली" inputmode="text"></div>
         <div class="form-group"><label>रिमार्क</label><textarea id="modalRemark" placeholder="नोट्स..."></textarea></div>
         <div class="modal-buttons"><button class="submit-order-btn" id="modalSubmitBtn">✅ ऑर्डर करें</button><button class="cancel-modal-btn" id="modalCancelBtn">❌ रद्द करें</button></div>
     </div>
@@ -556,7 +557,7 @@
     ];
 
     function initDB() {
-        const req = indexedDB.open('GasDeliveryDB', 22);
+        const req = indexedDB.open('GasDeliveryDB', 24);
         req.onupgradeneeded = (e) => {
             db = e.target.result;
             if (!db.objectStoreNames.contains('orders')) {
@@ -752,6 +753,7 @@
 
     document.getElementById('clearAllDataBtn')?.addEventListener('click', clearAllData);
 
+    // Modal Logic for New Order
     const modal = document.getElementById('orderModal');
     const newOrderBtn = document.getElementById('newOrderHeaderBtn');
     
@@ -788,6 +790,7 @@
         };
     };
 
+    // Search + Filter + Display
     const searchInput = document.getElementById('searchInput');
     const suggestionsDiv = document.getElementById('suggestions');
     searchInput.addEventListener('input', (e) => {
@@ -822,8 +825,60 @@
     }
 
     function makeCall(mob) { if (mob && mob.trim()) window.location.href = `tel:${mob.trim()}`; else alert('❌ नंबर नहीं'); }
-    function moveToProcessing(id) { const dsc = prompt("DSC Code दें:"); if (!dsc) return; const tx = db.transaction(['orders'],'readwrite'); tx.objectStore('orders').get(id).onsuccess = (e) => { const o = e.target.result; if (!o.dscCode) { o.dscCode = dsc.toUpperCase(); db.transaction(['dscCodes'],'readwrite').objectStore('dscCodes').put({ dscCode: dsc.toUpperCase() }); } if (o.dscCode !== dsc.toUpperCase()) return alert('❌ DSC गलत'); o.status = 'processing'; tx.objectStore('orders').put(o); alert('✅ प्रोसेसिंग'); loadOrders(); updateStats(); }; }
-    function moveToDelivered(id) { const rm = prompt("डिलीवरी रिमार्क:"); const tx = db.transaction(['orders'],'readwrite'); tx.objectStore('orders').get(id).onsuccess = (e) => { const o = e.target.result; if (o.status !== 'processing') return alert('पहले प्रोसेसिंग करें'); o.status = 'delivered'; o.deliveredDate = new Date().toISOString(); o.deliveryRemark = rm || ''; tx.objectStore('orders').put(o); alert('✅ डिलीवर'); loadOrders(); updateStats(); }; }
+    
+    function moveToProcessing(id) { 
+        const dsc = prompt("🔑 DSC Code दें (प्रोसेसिंग के लिए):"); 
+        if (!dsc) return; 
+        const tx = db.transaction(['orders'],'readwrite'); 
+        tx.objectStore('orders').get(id).onsuccess = (e) => { 
+            const o = e.target.result; 
+            if (!o.dscCode) { 
+                o.dscCode = dsc.toUpperCase(); 
+                db.transaction(['dscCodes'],'readwrite').objectStore('dscCodes').put({ dscCode: dsc.toUpperCase() }); 
+            } 
+            if (o.dscCode !== dsc.toUpperCase()) return alert('❌ DSC Code गलत!'); 
+            o.status = 'processing'; 
+            tx.objectStore('orders').put(o); 
+            alert('✅ ऑर्डर प्रोसेसिंग में भेज दिया'); 
+            loadOrders(); 
+            updateStats(); 
+        }; 
+    }
+    
+    // 🔥 बदलाव यहाँ: डिलीवर में DSC Code नहीं, डबल कंफर्मेशन
+    function moveToDelivered(id) {
+        // पहला कंफर्मेशन
+        const confirmDelivery = confirm("⚠️ क्या आप सच में इस ऑर्डर को डिलीवर करना चाहते हैं?\n(हाँ के लिए OK, नहीं के लिए Cancel)");
+        if (!confirmDelivery) {
+            alert("❌ डिलीवरी रद्द कर दी गई।");
+            return;
+        }
+        
+        // दूसरा कंफर्मेशन: रिमार्क (वैकल्पिक)
+        const deliveryRemark = prompt("📝 डिलीवरी रिमार्क लिखें (वैकल्पिक):", "");
+        if (deliveryRemark === null) {
+            alert("❌ डिलीवरी रद्द कर दी गई।");
+            return;
+        }
+        
+        // डिलीवर करो
+        const tx = db.transaction(['orders'],'readwrite');
+        tx.objectStore('orders').get(id).onsuccess = (e) => {
+            const o = e.target.result;
+            if (o.status !== 'processing') {
+                alert("❌ केवल प्रोसेसिंग वाला ऑर्डर डिलीवर हो सकता है।");
+                return;
+            }
+            o.status = 'delivered';
+            o.deliveredDate = new Date().toISOString();
+            o.deliveryRemark = deliveryRemark || '';
+            tx.objectStore('orders').put(o);
+            alert("✅ ऑर्डर सफलतापूर्वक डिलीवर हो गया!");
+            loadOrders();
+            updateStats();
+        };
+    }
+    
     function deleteOrder(id) { if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन'); if (confirm('हटाएं?')) { db.transaction(['orders'],'readwrite').objectStore('orders').delete(id).onsuccess = () => { loadOrders(); updateStats(); }; } }
 
     function loadOrders() { if (!db) return; db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => { allOrders = e.target.result || []; displayFilteredOrders(); updateStats(); }; }
@@ -840,9 +895,9 @@
                     <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
                 </div>
                 <div class="order-details">
-                    <div><strong>🆔 कंज्यूमर:</strong> <strong style="font-size:0.8rem; color:#1e3a8a;">${escapeHtml(order.consumerNo)}</strong></div>
+                    <div><strong>🆔 कंज्यूमर:</strong> <span class="consumer-mob">${escapeHtml(order.consumerNo)}</span></div>
                     <div>${dscDisplay}</div>
-                    <div><strong>📞 मोबाइल:</strong> <strong style="font-size:0.8rem; color:#1e3a8a;">${escapeHtml(order.mobile)}</strong></div>
+                    <div><strong>📞 मोबाइल:</strong> <span class="consumer-mob">${escapeHtml(order.mobile)}</span></div>
                     <div><strong>📍 पता:</strong> ${escapeHtml(order.address)}</div>
                     <div><strong>🎯 सिलेंडर:</strong> ${order.cylinderType} - ₹${order.price}</div>
                     ${order.remark ? `<div><strong>📝 नोट:</strong> ${escapeHtml(order.remark)}</div>` : ''}
@@ -891,7 +946,7 @@
     document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
         db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => {
             const orders = e.target.result;
-            let html = `<html><head><meta charset="UTF-8"><title>Report</title><style>th,td{border:1px solid #000;padding:6px;}th{background:#4f46e5;color:white;}</style></head><body><h2>रिपोर्ट</h2><table border="1"><thead><tr><th>कंज्यूमर</th><th>DSC</th><th>नाम</th><th>मोबाइल</th><th>पता</th><th>सिलेंडर</th><th>कीमत</th><th>स्टेटस</th><th>रिमार्क</th><th>डिलीवरी तारीख</th><th>डिलीवरी रिमार्क</th><th>ऑर्डर तारीख</th><th>30+ दिन</th></tr></thead><tbody>`;
+            let html = `<html><head><meta charset="UTF-8"><title>Report</title><style>th,td{border:1px solid #000;padding:6px;}th{background:#4f46e5;color:white;}</style></head><body><h2>रिपोर्ट</h2><table border="1"><thead><tr><th>कंज्यूमर</th><th>DSC</th><th>नाम</th><th>मोबाइल</th><th>पता</th><th>सिलेंडर</th><th>कीमत</th><th>स्टेटस</th><th>रिमार्क</th><th>डिलीवरी तारीख</th><th>डिलीवरी रिमार्क</th><th>ऑर्डर तारीख</th><th>30+ दिन</th><table></thead><tbody>`;
             orders.forEach(o => { const isOld = isCustomerOld(o.customerName, o.mobile, orders); html += `<tr style="${isOld ? 'background:#fee2e2' : ''}"><td>${escapeHtml(o.consumerNo||'')}</td><td>${escapeHtml(o.dscCode||'')}</td><td>${escapeHtml(o.customerName||'')}</td><td>${escapeHtml(o.mobile||'')}</td><td>${escapeHtml(o.address||'')}</td><td>${o.cylinderType||''}</td><td>${o.price||''}</td><td>${o.status}</td><td>${escapeHtml(o.remark||'')}</td><td>${o.deliveredDate ? new Date(o.deliveredDate).toLocaleString() : '-'}</td><td>${escapeHtml(o.deliveryRemark||'')}</td><td>${new Date(o.date).toLocaleString()}</td><td>${isOld ? 'हाँ' : 'नहीं'}</td></tr>`; });
             html += `</tbody>}凿</body></html>`;
             const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([html], {type:'application/vnd.ms-excel'})); link.download = `gas_report_${Date.now()}.xls`; link.click(); alert('✅ एक्सेल डाउनलोड');
