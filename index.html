@@ -79,6 +79,7 @@
             flex-direction: column;
             height: 85vh;
             overflow: hidden;
+            position: relative;
         }
         .header {
             background: linear-gradient(135deg, #f093fb, #f5576c);
@@ -88,9 +89,28 @@
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .header h1 {
-            font-size: 1rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+        /* नया ऑर्डर बटन - Header के बीच में */
+        .new-order-header-btn {
+            background: white;
+            color: #f5576c;
+            border: none;
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
         .user-info {
             display: flex;
@@ -199,70 +219,72 @@
             border-bottom: 1px solid #e2e8f0;
             font-size: 0.65rem;
         }
-        .order-form {
-            background: #f9fafb;
-            margin: 4px 8px;
-            padding: 6px;
-            border-radius: 14px;
-            flex-shrink: 0;
-        }
-        .order-form h3 {
-            font-size: 0.75rem;
-            margin-bottom: 4px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px;
-            margin-bottom: 4px;
-        }
-        .form-group {
-            margin-bottom: 4px;
-        }
-        .form-group label {
-            font-size: 0.6rem;
-            font-weight: 600;
-        }
-        .form-group input, .form-group select, .form-group textarea {
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 4px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 0.65rem;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
-        textarea {
-            height: 28px;
-            resize: none;
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        .btn-row {
+        .modal-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #4f46e5;
+        }
+        .modal-content .form-group {
+            margin-bottom: 12px;
+        }
+        .modal-content .form-group label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .modal-content .form-group input, 
+        .modal-content .form-group select, 
+        .modal-content .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.8rem;
+        }
+        .modal-buttons {
             display: flex;
-            gap: 5px;
-            margin-top: 4px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
         }
-        button {
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 40px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-order-btn {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border: none;
-            padding: 4px 6px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 0.6rem;
-            cursor: pointer;
-            flex: 1;
         }
-        .excel-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-        .backup-btn {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-        }
-        .restore-btn {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-        }
-        .clear-btn {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        .cancel-modal-btn {
+            background: #e2e8f0;
+            color: #334155;
         }
         .admin-panel {
             background: #f1f5f9;
@@ -371,25 +393,13 @@
             font-size: 0.55rem;
             width: auto;
             border-radius: 20px;
+            cursor: pointer;
+            border: none;
         }
-        .processing-btn { 
-            background: #10b981;
-            padding: 4px 12px;
-            font-size: 0.6rem;
-        }
-        .deliver-btn { background: #3b82f6; }
-        .delete-btn { background: #ef4444; }
-        .call-btn {
-            background: #22c55e;
-            padding: 3px 8px;
-            font-size: 0.55rem;
-        }
-        .dsc-badge {
-            background: #f3e8ff;
-            padding: 1px 4px;
-            border-radius: 10px;
-            font-size: 0.45rem;
-        }
+        .processing-btn { background: #10b981; color: white; }
+        .deliver-btn { background: #3b82f6; color: white; }
+        .delete-btn { background: #ef4444; color: white; }
+        .call-btn { background: #22c55e; color: white; }
         .nav {
             display: flex;
             gap: 3px;
@@ -405,6 +415,9 @@
             flex: 1;
             padding: 3px 4px;
             font-size: 0.55rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
         }
         .nav-btn.active {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -419,6 +432,9 @@
         .file-input {
             display: none;
         }
+        button {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -429,9 +445,9 @@
         <p style="margin-bottom: 15px;">लॉगिन करें</p>
         <input type="text" id="loginUsername" placeholder="यूजरनेम" autocomplete="off">
         <input type="password" id="loginPassword" placeholder="पासवर्ड">
-        <div id="loadingMsg" class="loading-msg">⏳ डेटाबेस लोड हो रहा है, कृपया प्रतीक्षा करें...</div>
+        <div id="loadingMsg" class="loading-msg">⏳ डेटाबेस लोड हो रहा है...</div>
         <button id="doLoginBtn" style="display:none;">लॉगिन करें</button>
-        <button id="restoreBtnLogin" class="restore-btn-login" style="display:none;">🔄 रिस्टोर डेटा (JSON)</button>
+        <button id="restoreBtnLogin" class="restore-btn-login" style="display:none;">🔄 रिस्टोर</button>
         <div id="loginError" class="error-msg">गलत यूजरनेम या पासवर्ड</div>
     </div>
     <input type="file" id="restoreFileInputLogin" accept=".json" style="display:none">
@@ -440,6 +456,8 @@
 <div id="mainApp" class="app" style="display: none;">
     <div class="header">
         <h1>🚚 KARTIKEY BHARAT GAS</h1>
+        <!-- 🛒 नया ऑर्डर बटन - बीच में -->
+        <button class="new-order-header-btn" id="newOrderHeaderBtn">➕ नया ऑर्डर</button>
         <div class="user-info">
             <span id="userRoleBadge"></span>
             <span class="logout-btn" id="logoutBtn">लॉगआउट</span>
@@ -461,7 +479,7 @@
         <div class="stat-card"><small>📦 डिलीवर</small><h3 id="totalDelivered">0</h3></div>
         <div class="stat-card"><small>👥 कंज्यूमर</small><h3 id="totalConsumers">0</h3></div>
         <div class="stat-card"><small>🔑 DSC</small><h3 id="totalDscCodes">0</h3></div>
-        <div class="stat-card warning"><small>⚠️ 25+ कस्टमर</small><h3 id="totalOldCustomers">0</h3></div>
+        <div class="stat-card warning"><small>⚠️ 30+ कस्टमर</small><h3 id="totalOldCustomers">0</h3></div>
         <div class="stat-card"><small>📊 कुल</small><h3 id="totalOrders">0</h3></div>
     </div>
 
@@ -474,35 +492,8 @@
         <div id="suggestions" class="suggestions"></div>
     </div>
 
-    <div class="order-form">
-        <h3>🛒 नया ऑर्डर</h3>
-        <div class="form-row">
-            <div class="form-group"><label>कंज्यूमर नंबर</label><input id="consumerNo" placeholder="1234567890"></div>
-            <div class="form-group"><label>मोबाइल</label><input id="mobile" placeholder="9876543210"></div>
-        </div>
-        <div class="form-row">
-            <div class="form-group"><label>ग्राहक नाम</label><input id="customerName" placeholder="राम कुमार"></div>
-            <div class="form-group"><label>सिलेंडर</label>
-                <select id="cylinderType">
-                    <option value="14.2kg">14.2 kg (₹985)</option>
-                    <option value="19kg">19 kg (₹3050)</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group"><label>पता</label><input id="address" placeholder="मेन रोड, दिल्ली"></div>
-        <div class="form-group"><label>रिमार्क</label><textarea id="remark" placeholder="नोट्स..."></textarea></div>
-        <div class="btn-row">
-            <button id="addOrderBtn">✅ ऑर्डर करें</button>
-            <button id="exportExcelBtn" class="excel-btn">📊 एक्सेल</button>
-            <button id="backupBtn" class="backup-btn">💾 बैकअप</button>
-            <button id="restoreBtn" class="restore-btn">🔄 रिस्टोर</button>
-            <button id="clearAllDataBtn" class="clear-btn">🗑️ सब साफ करें</button>
-        </div>
-        <input type="file" id="restoreFileInput" accept=".json" style="display:none">
-    </div>
-
     <div id="adminPanel" class="admin-panel" style="display: none;">
-        <h4>👑 एडमिन: नया डिलीवरी एजेंट बनाएं</h4>
+        <h4>👑 एडमिन: नया डिलीवरी एजेंट</h4>
         <div class="agent-row">
             <input type="text" id="newAgentUser" placeholder="यूजरनेम">
             <input type="text" id="newAgentPass" placeholder="पासवर्ड">
@@ -512,7 +503,7 @@
     </div>
 
     <div class="orders-list">
-        <h3>📋 ऑर्डर लिस्ट <span style="color:#dc2626;">(लाल = कस्टमर 25+ दिन)</span></h3>
+        <h3>📋 ऑर्डर लिस्ट <span style="color:#dc2626;">(लाल = 30+ दिन)</span></h3>
         <div id="ordersContainer"></div>
     </div>
 
@@ -521,7 +512,21 @@
         <button class="nav-btn" data-filter="pending">⏳ पेंडिंग</button>
         <button class="nav-btn" data-filter="processing">🚚 प्रोसेसिंग</button>
         <button class="nav-btn" data-filter="delivered">✅ डिलीवर</button>
-        <button class="nav-btn" data-filter="old25">⚠️ 25+ कस्टमर</button>
+        <button class="nav-btn" data-filter="old30">⚠️ 30+ कस्टमर</button>
+    </div>
+</div>
+
+<!-- Modal for New Order -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <h3>🛒 नया ऑर्डर</h3>
+        <div class="form-group"><label>कंज्यूमर नंबर</label><input id="modalConsumerNo" placeholder="1234567890"></div>
+        <div class="form-group"><label>मोबाइल</label><input id="modalMobile" placeholder="9876543210"></div>
+        <div class="form-group"><label>ग्राहक नाम</label><input id="modalCustomerName" placeholder="राम कुमार"></div>
+        <div class="form-group"><label>सिलेंडर</label><select id="modalCylinderType"><option value="14.2kg">14.2 kg (₹985)</option><option value="19kg">19 kg (₹3050)</option></select></div>
+        <div class="form-group"><label>पता</label><input id="modalAddress" placeholder="मेन रोड, दिल्ली"></div>
+        <div class="form-group"><label>रिमार्क</label><textarea id="modalRemark" placeholder="नोट्स..."></textarea></div>
+        <div class="modal-buttons"><button class="submit-order-btn" id="modalSubmitBtn">✅ ऑर्डर करें</button><button class="cancel-modal-btn" id="modalCancelBtn">❌ रद्द करें</button></div>
     </div>
 </div>
 
@@ -542,11 +547,9 @@
     ];
 
     function initDB() {
-        const req = indexedDB.open('GasDeliveryDB', 18);
-        
+        const req = indexedDB.open('GasDeliveryDB', 21);
         req.onupgradeneeded = (e) => {
             db = e.target.result;
-            
             if (!db.objectStoreNames.contains('orders')) {
                 const orderStore = db.createObjectStore('orders', { keyPath: 'id', autoIncrement: true });
                 orderStore.createIndex('status', 'status');
@@ -554,18 +557,13 @@
                 orderStore.createIndex('mobile', 'mobile');
                 orderStore.createIndex('date', 'date');
             }
-            if (!db.objectStoreNames.contains('customers')) {
-                db.createObjectStore('customers', { keyPath: 'mobile' });
-            }
-            if (!db.objectStoreNames.contains('dscCodes')) {
-                db.createObjectStore('dscCodes', { keyPath: 'dscCode' });
-            }
+            if (!db.objectStoreNames.contains('customers')) db.createObjectStore('customers', { keyPath: 'mobile' });
+            if (!db.objectStoreNames.contains('dscCodes')) db.createObjectStore('dscCodes', { keyPath: 'dscCode' });
             if (!db.objectStoreNames.contains('agents')) {
                 const agentStore = db.createObjectStore('agents', { keyPath: 'username' });
                 DEFAULT_AGENTS.forEach(agent => agentStore.put(agent));
             }
         };
-        
         req.onsuccess = (e) => {
             db = e.target.result;
             dbReady = true;
@@ -574,33 +572,16 @@
             document.getElementById('restoreBtnLogin').style.display = 'block';
             checkSession();
         };
-        
-        req.onerror = (e) => {
-            console.log('DB Error', e);
-            document.getElementById('loadingMsg').innerHTML = '❌ डेटाबेस एरर, पेज रिफ्रेश करें';
-            document.getElementById('loadingMsg').style.color = '#dc2626';
-        };
+        req.onerror = () => { document.getElementById('loadingMsg').innerHTML = '❌ डेटाबेस एरर'; };
     }
-    
     initDB();
 
     function getDateFromFilter() {
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        if (currentDateFilter === 'today') {
-            return { start: today, end: new Date(today.getTime() + 86400000) };
-        } else if (currentDateFilter === 'yesterday') {
-            const yesterday = new Date(today);
-            yesterday.setDate(yesterday.getDate() - 1);
-            return { start: yesterday, end: today };
-        } else if (currentDateFilter === 'week') {
-            const weekStart = new Date(today);
-            weekStart.setDate(today.getDate() - today.getDay());
-            return { start: weekStart, end: new Date(today.getTime() + 86400000) };
-        } else if (currentDateFilter === 'month') {
-            const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-            return { start: monthStart, end: new Date(today.getTime() + 86400000) };
-        }
+        const today = new Date(); today.setHours(0,0,0,0);
+        if (currentDateFilter === 'today') return { start: today, end: new Date(today.getTime() + 86400000) };
+        if (currentDateFilter === 'yesterday') { const y = new Date(today); y.setDate(y.getDate() - 1); return { start: y, end: today }; }
+        if (currentDateFilter === 'week') { const ws = new Date(today); ws.setDate(today.getDate() - today.getDay()); return { start: ws, end: new Date(today.getTime() + 86400000) }; }
+        if (currentDateFilter === 'month') { const ms = new Date(today.getFullYear(), today.getMonth(), 1); return { start: ms, end: new Date(today.getTime() + 86400000) }; }
         return null;
     }
 
@@ -608,26 +589,16 @@
         if (!currentDateFilter || currentDateFilter === 'all') return orders;
         const range = getDateFromFilter();
         if (!range) return orders;
-        return orders.filter(order => {
-            const orderDate = new Date(order.date);
-            orderDate.setHours(0,0,0,0);
-            return orderDate >= range.start && orderDate < range.end;
-        });
+        return orders.filter(order => { const od = new Date(order.date); od.setHours(0,0,0,0); return od >= range.start && od < range.end; });
     }
 
     function isCustomerOld(customerName, mobile, ordersList = null) {
         const ordersToCheck = ordersList || allOrders;
-        const customerOrders = ordersToCheck.filter(order => 
-            order.customerName === customerName || order.mobile === mobile
-        );
+        const customerOrders = ordersToCheck.filter(order => order.customerName === customerName || order.mobile === mobile);
         if (customerOrders.length === 0) return false;
-        const latestOrder = customerOrders.reduce((latest, current) => 
-            new Date(current.date) > new Date(latest.date) ? current : latest
-        );
-        const lastOrderDateObj = new Date(latestOrder.date);
-        const today = new Date();
-        const diffDays = Math.ceil((today - lastOrderDateObj) / (1000 * 60 * 60 * 24));
-        return diffDays >= 25;
+        const latestOrder = customerOrders.reduce((latest, current) => new Date(current.date) > new Date(latest.date) ? current : latest);
+        const diffDays = Math.ceil((new Date() - new Date(latestOrder.date)) / (1000 * 60 * 60 * 24));
+        return diffDays >= 30;
     }
 
     function getUniqueOldCustomersCount(ordersList) {
@@ -641,7 +612,7 @@
         let oldCount = 0;
         for (let customer of uniqueCustomers.values()) {
             const diffDays = Math.ceil((new Date() - new Date(customer.date)) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 25) oldCount++;
+            if (diffDays >= 30) oldCount++;
         }
         return oldCount;
     }
@@ -651,623 +622,252 @@
         reader.onload = async (event) => {
             try {
                 const backupData = JSON.parse(event.target.result);
-                
-                if (!backupData.orders || !backupData.customers || !backupData.dscCodes || !backupData.agents) {
-                    alert('❌ गलत बैकअप फाइल! फाइल में orders, customers, dscCodes, agents होने चाहिए।');
-                    if (callback) callback(false);
-                    return;
-                }
-                
-                const confirmRestore = confirm('⚠️ क्या आप डेटा रिस्टोर करना चाहते हैं? मौजूदा सारा डेटा डिलीट हो जाएगा!');
-                if (!confirmRestore) {
-                    if (callback) callback(false);
-                    return;
-                }
-                
-                // Clear all existing data
-                const clearOrders = new Promise((resolve) => {
-                    const tx = db.transaction(['orders'], 'readwrite');
-                    tx.objectStore('orders').clear();
-                    tx.oncomplete = resolve;
-                });
-                
-                const clearCustomers = new Promise((resolve) => {
-                    const tx = db.transaction(['customers'], 'readwrite');
-                    tx.objectStore('customers').clear();
-                    tx.oncomplete = resolve;
-                });
-                
-                const clearDsc = new Promise((resolve) => {
-                    const tx = db.transaction(['dscCodes'], 'readwrite');
-                    tx.objectStore('dscCodes').clear();
-                    tx.oncomplete = resolve;
-                });
-                
-                const clearAgents = new Promise((resolve) => {
-                    const tx = db.transaction(['agents'], 'readwrite');
-                    tx.objectStore('agents').clear();
-                    tx.oncomplete = resolve;
-                });
-                
-                await Promise.all([clearOrders, clearCustomers, clearDsc, clearAgents]);
-                
-                // Restore new data
-                const restoreOrders = new Promise((resolve, reject) => {
-                    const tx = db.transaction(['orders'], 'readwrite');
-                    backupData.orders.forEach(order => {
-                        tx.objectStore('orders').add(order);
-                    });
-                    tx.oncomplete = resolve;
-                    tx.onerror = reject;
-                });
-                
-                const restoreCustomers = new Promise((resolve, reject) => {
-                    const tx = db.transaction(['customers'], 'readwrite');
-                    backupData.customers.forEach(customer => {
-                        tx.objectStore('customers').add(customer);
-                    });
-                    tx.oncomplete = resolve;
-                    tx.onerror = reject;
-                });
-                
-                const restoreDsc = new Promise((resolve, reject) => {
-                    const tx = db.transaction(['dscCodes'], 'readwrite');
-                    backupData.dscCodes.forEach(dsc => {
-                        tx.objectStore('dscCodes').add(dsc);
-                    });
-                    tx.oncomplete = resolve;
-                    tx.onerror = reject;
-                });
-                
-                const restoreAgents = new Promise((resolve, reject) => {
-                    const tx = db.transaction(['agents'], 'readwrite');
-                    backupData.agents.forEach(agent => {
-                        tx.objectStore('agents').add(agent);
-                    });
-                    tx.oncomplete = resolve;
-                    tx.onerror = reject;
-                });
-                
-                await Promise.all([restoreOrders, restoreCustomers, restoreDsc, restoreAgents]);
-                
-                alert('✅ डेटा सफलतापूर्वक रिस्टोर हो गया!');
-                if (callback) callback(true);
-                
-            } catch (err) {
-                console.error(err);
-                alert('❌ रिस्टोर करते समय त्रुटि! कृपया सही JSON फाइल चुनें।');
-                if (callback) callback(false);
-            }
-        };
-        reader.onerror = () => {
-            alert('❌ फाइल पढ़ने में त्रुटि!');
-            if (callback) callback(false);
+                if (!backupData.orders || !backupData.customers || !backupData.dscCodes || !backupData.agents) throw new Error();
+                if (!confirm('⚠️ पूरा डेटा रिस्टोर होगा। जारी रखें?')) return callback(false);
+                await Promise.all([
+                    new Promise(r => { const tx = db.transaction(['orders'],'readwrite'); tx.objectStore('orders').clear(); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['customers'],'readwrite'); tx.objectStore('customers').clear(); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['dscCodes'],'readwrite'); tx.objectStore('dscCodes').clear(); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['agents'],'readwrite'); tx.objectStore('agents').clear(); tx.oncomplete = r; })
+                ]);
+                await Promise.all([
+                    new Promise(r => { const tx = db.transaction(['orders'],'readwrite'); backupData.orders.forEach(o => tx.objectStore('orders').add(o)); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['customers'],'readwrite'); backupData.customers.forEach(c => tx.objectStore('customers').add(c)); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['dscCodes'],'readwrite'); backupData.dscCodes.forEach(d => tx.objectStore('dscCodes').add(d)); tx.oncomplete = r; }),
+                    new Promise(r => { const tx = db.transaction(['agents'],'readwrite'); backupData.agents.forEach(a => tx.objectStore('agents').add(a)); tx.oncomplete = r; })
+                ]);
+                alert('✅ डेटा रिस्टोर हो गया');
+                callback(true);
+            } catch (err) { alert('❌ गलत फाइल'); callback(false); }
         };
         reader.readAsText(file);
     }
 
     function clearAllData() {
-        if (currentUser?.role !== 'admin') {
-            alert('❌ सिर्फ एडमिन सारा डेटा साफ कर सकता है');
-            return;
-        }
-        if (confirm('⚠️ क्या आप सारा डेटा डिलीट करना चाहते हैं?')) {
-            const tx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readwrite');
-            tx.objectStore('orders').clear();
-            tx.objectStore('customers').clear();
-            tx.objectStore('dscCodes').clear();
-            tx.objectStore('agents').clear();
+        if (currentUser?.role !== 'admin') return alert('❌ सिर्फ एडमिन');
+        if (confirm('⚠️ सारा डेटा डिलीट करें?')) {
+            ['orders','customers','dscCodes','agents'].forEach(store => { const tx = db.transaction([store],'readwrite'); tx.objectStore(store).clear(); });
             setTimeout(() => {
-                const agentTx = db.transaction(['agents'], 'readwrite');
-                DEFAULT_AGENTS.forEach(agent => agentTx.objectStore('agents').put(agent));
-                agentTx.oncomplete = () => {
-                    alert('✅ सारा डेटा साफ हो गया!');
-                    loadOrders();
-                    updateStats();
-                    if (currentUser?.role === 'admin') loadAgentList();
-                };
+                const tx = db.transaction(['agents'],'readwrite');
+                DEFAULT_AGENTS.forEach(a => tx.objectStore('agents').put(a));
+                tx.oncomplete = () => { loadOrders(); updateStats(); if(currentUser?.role === 'admin') loadAgentList(); alert('✅ साफ हो गया'); };
             }, 100);
         }
     }
 
     function deleteAgent(agentUsername) {
-        if (currentUser?.role !== 'admin') return alert('❌ सिर्फ एडमिन');
-        if (DEFAULT_AGENTS.some(a => a.username === agentUsername)) return alert('⚠️ डिफॉल्ट एजेंट को डिलीट नहीं किया जा सकता!');
-        if (confirm(`क्या आप एजेंट "${agentUsername}" को डिलीट करना चाहते हैं?`)) {
-            const tx = db.transaction(['agents'], 'readwrite');
-            tx.objectStore('agents').delete(agentUsername);
-            tx.oncomplete = () => {
-                alert(`✅ एजेंट "${agentUsername}" डिलीट हो गया`);
-                loadAgentList();
-            };
+        if (currentUser?.role !== 'admin') return;
+        if (DEFAULT_AGENTS.some(a => a.username === agentUsername)) return alert('⚠️ डिफॉल्ट एजेंट नहीं हटेगा');
+        if (confirm(`हटाएं "${agentUsername}"?`)) {
+            const tx = db.transaction(['agents'],'readwrite'); tx.objectStore('agents').delete(agentUsername);
+            tx.oncomplete = () => { alert('✅ हटा दिया'); loadAgentList(); };
         }
     }
 
-    // Login screen restore button
-    document.getElementById('restoreBtnLogin').addEventListener('click', () => {
-        if (!dbReady) {
-            alert('डेटाबेस लोड हो रहा है, कुछ सेकंड बाद प्रयास करें');
-            return;
-        }
-        document.getElementById('restoreFileInputLogin').click();
-    });
-
-    document.getElementById('restoreFileInputLogin').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        restoreDataFromJson(file, (success) => {
-            if (success && currentUser) {
-                loadOrders();
-                updateStats();
-                if (currentUser?.role === 'admin') loadAgentList();
-            }
-        });
-        e.target.value = '';
-    });
-
-    document.getElementById('doLoginBtn').addEventListener('click', () => {
-        if (!dbReady) {
-            alert('डेटाबेस अभी लोड हो रहा है, कुछ सेकंड बाद लॉगिन करें');
-            return;
-        }
+    document.getElementById('doLoginBtn').onclick = () => {
+        if (!dbReady) return alert('डेटाबेस लोड हो रहा');
         const uname = document.getElementById('loginUsername').value.trim();
         const pwd = document.getElementById('loginPassword').value.trim();
-        const errorDiv = document.getElementById('loginError');
-        
         if (uname === ADMIN_USER.username && pwd === ADMIN_USER.password) {
             currentUser = { username: ADMIN_USER.username, role: 'admin' };
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            showApp();
-            return;
+            showApp(); return;
         }
-
-        const tx = db.transaction(['agents'], 'readonly');
-        const store = tx.objectStore('agents');
-        const request = store.get(uname);
-        request.onsuccess = () => {
-            const agent = request.result;
-            if (agent && agent.password === pwd && agent.role === 'agent') {
+        const tx = db.transaction(['agents'],'readonly');
+        tx.objectStore('agents').get(uname).onsuccess = (e) => {
+            const agent = e.target.result;
+            if (agent && agent.password === pwd) {
                 currentUser = { username: agent.username, role: 'agent' };
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 showApp();
-            } else {
-                errorDiv.style.display = 'block';
-                setTimeout(() => errorDiv.style.display = 'none', 2000);
-            }
+            } else { document.getElementById('loginError').style.display = 'block'; setTimeout(() => document.getElementById('loginError').style.display = 'none', 2000); }
         };
-        request.onerror = () => {
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 2000);
-        };
-    });
+    };
 
     function showApp() {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('mainApp').style.display = 'flex';
-        document.getElementById('userRoleBadge').innerText = currentUser.role === 'admin' ? '👑 एडमिन' : '🚚 डिलीवरी एजेंट';
-        const adminPanel = document.getElementById('adminPanel');
-        if (currentUser.role === 'admin') {
-            adminPanel.style.display = 'block';
-            loadAgentList();
+        document.getElementById('userRoleBadge').innerText = currentUser.role === 'admin' ? '👑 एडमिन' : '🚚 एजेंट';
+        if (currentUser.role === 'admin') { 
+            document.getElementById('adminPanel').style.display = 'block'; 
+            loadAgentList(); 
         } else {
-            adminPanel.style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'none';
         }
-        loadOrders();
+        loadOrders(); 
         updateStats();
     }
 
-    function checkSession() {
-        if (!dbReady) return;
-        const savedUser = localStorage.getItem('currentUser');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            showApp();
-        }
+    function checkSession() { 
+        if (dbReady && localStorage.getItem('currentUser')) { 
+            currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+            showApp(); 
+        } 
     }
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        currentUser = null;
-        localStorage.removeItem('currentUser');
-        document.getElementById('loginScreen').style.display = 'block';
-        document.getElementById('mainApp').style.display = 'none';
-        document.getElementById('loginUsername').value = '';
-        document.getElementById('loginPassword').value = '';
-    });
+    
+    document.getElementById('logoutBtn').onclick = () => { 
+        currentUser = null; 
+        localStorage.clear(); 
+        document.getElementById('loginScreen').style.display = 'block'; 
+        document.getElementById('mainApp').style.display = 'none'; 
+    };
 
     function loadAgentList() {
         if (!db) return;
-        const tx = db.transaction(['agents'], 'readonly');
+        const tx = db.transaction(['agents'],'readonly');
         tx.objectStore('agents').getAll().onsuccess = (e) => {
-            const agents = e.target.result;
             let html = '';
-            agents.forEach(agent => {
-                const isDefault = DEFAULT_AGENTS.some(a => a.username === agent.username);
-                if (isDefault) {
+            e.target.result.forEach(agent => {
+                if (DEFAULT_AGENTS.some(a => a.username === agent.username))
                     html += `<div class="agent-item"><span>🔑 ${agent.username} (डिफॉल्ट)</span></div>`;
-                } else {
-                    html += `<div class="agent-item">
-                                <span>🔑 ${agent.username}</span>
-                                <button class="delete-agent-btn" data-agent="${agent.username}">🗑️ हटाएं</button>
-                             </div>`;
-                }
+                else
+                    html += `<div class="agent-item"><span>🔑 ${agent.username}</span><button class="delete-agent-btn" data-agent="${agent.username}">🗑️</button></div>`;
             });
-            document.getElementById('agentListDisplay').innerHTML = html || '📋 कोई एजेंट नहीं';
-            document.querySelectorAll('.delete-agent-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    deleteAgent(btn.dataset.agent);
-                    e.stopPropagation();
-                });
-            });
+            document.getElementById('agentListDisplay').innerHTML = html || 'कोई एजेंट नहीं';
+            document.querySelectorAll('.delete-agent-btn').forEach(btn => btn.onclick = () => deleteAgent(btn.dataset.agent));
         };
     }
 
-    document.getElementById('createAgentBtn')?.addEventListener('click', () => {
-        if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन');
-        const newUser = document.getElementById('newAgentUser').value.trim();
-        const newPass = document.getElementById('newAgentPass').value.trim();
-        if (!newUser || !newPass) return alert('यूजरनेम और पासवर्ड दोनों दें');
-        const tx = db.transaction(['agents'], 'readwrite');
-        const store = tx.objectStore('agents');
-        store.get(newUser).onsuccess = (e) => {
-            if (e.target.result) return alert('यूजरनेम पहले से मौजूद');
-            store.add({ username: newUser, password: newPass, role: 'agent' });
-            tx.oncomplete = () => {
-                alert(`✅ एजेंट "${newUser}" बना दिया गया`);
-                document.getElementById('newAgentUser').value = '';
-                document.getElementById('newAgentPass').value = '';
-                loadAgentList();
-            };
+    document.getElementById('createAgentBtn').onclick = () => {
+        if (currentUser?.role !== 'admin') return;
+        const nu = document.getElementById('newAgentUser').value.trim();
+        const np = document.getElementById('newAgentPass').value.trim();
+        if (!nu || !np) return alert('यूजरनेम/पासवर्ड दें');
+        const tx = db.transaction(['agents'],'readwrite');
+        tx.objectStore('agents').get(nu).onsuccess = (e) => {
+            if (e.target.result) return alert('पहले से है');
+            tx.objectStore('agents').add({ username: nu, password: np, role: 'agent' });
+            tx.oncomplete = () => { alert(`✅ ${nu} बना`); document.getElementById('newAgentUser').value = ''; document.getElementById('newAgentPass').value = ''; loadAgentList(); };
         };
-    });
+    };
 
-    document.getElementById('clearAllDataBtn').addEventListener('click', clearAllData);
+    document.getElementById('clearAllDataBtn')?.addEventListener('click', clearAllData);
 
-    document.getElementById('addOrderBtn').addEventListener('click', () => {
-        const consumerNo = document.getElementById('consumerNo').value.trim();
-        const customerName = document.getElementById('customerName').value.trim();
-        const mobile = document.getElementById('mobile').value.trim();
-        const address = document.getElementById('address').value.trim();
-        const cylinderType = document.getElementById('cylinderType').value;
-        const remark = document.getElementById('remark').value;
-        if (!consumerNo || !customerName || !mobile || !address) {
-            alert('सभी जरूरी फील्ड भरें');
-            return;
-        }
-        const newOrder = {
-            consumerNo, customerName, mobile, address, cylinderType,
-            price: cylinderPrices[cylinderType],
-            status: 'pending',
-            remark: remark || '',
-            dscCode: null,
-            date: new Date().toISOString(),
-            deliveredDate: null,
-            deliveryRemark: null
-        };
-        const tx = db.transaction(['orders'], 'readwrite');
+    // नया ऑर्डर बटन (Header में)
+    const modal = document.getElementById('orderModal');
+    const newOrderBtn = document.getElementById('newOrderHeaderBtn');
+    
+    newOrderBtn.onclick = () => {
+        modal.style.display = 'flex';
+    };
+    
+    document.getElementById('modalCancelBtn').onclick = () => {
+        modal.style.display = 'none';
+    };
+    
+    window.onclick = (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    };
+
+    document.getElementById('modalSubmitBtn').onclick = () => {
+        const cn = document.getElementById('modalConsumerNo').value.trim();
+        const name = document.getElementById('modalCustomerName').value.trim();
+        const mob = document.getElementById('modalMobile').value.trim();
+        const addr = document.getElementById('modalAddress').value.trim();
+        const cyl = document.getElementById('modalCylinderType').value;
+        const rem = document.getElementById('modalRemark').value;
+        if (!cn || !name || !mob || !addr) { alert('सभी जरूरी फील्ड भरें'); return; }
+        const newOrder = { consumerNo: cn, customerName: name, mobile: mob, address: addr, cylinderType: cyl, price: cylinderPrices[cyl], status: 'pending', remark: rem, dscCode: null, date: new Date().toISOString(), deliveredDate: null, deliveryRemark: null };
+        const tx = db.transaction(['orders'],'readwrite');
         tx.objectStore('orders').add(newOrder).onsuccess = () => {
             alert('✅ ऑर्डर जमा हुआ');
-            document.getElementById('consumerNo').value = '';
-            document.getElementById('customerName').value = '';
-            document.getElementById('mobile').value = '';
-            document.getElementById('address').value = '';
-            document.getElementById('remark').value = '';
-            const custTx = db.transaction(['customers'], 'readwrite');
-            custTx.objectStore('customers').put({ mobile, name: customerName, consumerNo, lastOrder: new Date().toISOString() });
-            loadOrders();
+            modal.style.display = 'none';
+            ['modalConsumerNo','modalCustomerName','modalMobile','modalAddress','modalRemark'].forEach(id => document.getElementById(id).value = '');
+            const ct = db.transaction(['customers'],'readwrite');
+            ct.objectStore('customers').put({ mobile: mob, name, consumerNo: cn, lastOrder: new Date().toISOString() });
+            loadOrders(); 
             updateStats();
         };
-    });
+    };
 
+    // Search + Filter + Display
     const searchInput = document.getElementById('searchInput');
     const suggestionsDiv = document.getElementById('suggestions');
-
     searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase().trim();
-        if (term.length < 1) {
-            suggestionsDiv.style.display = 'none';
-            return;
-        }
+        if (term.length < 1) { suggestionsDiv.style.display = 'none'; return; }
         const uniqueNames = [...new Set(allOrders.map(o => o.customerName).filter(n => n))];
-        const matches = uniqueNames.filter(name => name.toLowerCase().includes(term)).slice(0, 5);
-        if (matches.length > 0) {
-            suggestionsDiv.innerHTML = matches.map(name => 
-                `<div class="suggestion-item" data-name="${name}">🔍 ${name}</div>`
-            ).join('');
+        const matches = uniqueNames.filter(name => name.toLowerCase().includes(term)).slice(0,5);
+        if (matches.length) {
+            suggestionsDiv.innerHTML = matches.map(name => `<div class="suggestion-item" data-name="${name}">🔍 ${name}</div>`).join('');
             suggestionsDiv.style.display = 'block';
-            document.querySelectorAll('.suggestion-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    searchInput.value = item.dataset.name;
-                    suggestionsDiv.style.display = 'none';
-                    document.getElementById('searchBtn').click();
-                });
-            });
-        } else {
-            suggestionsDiv.style.display = 'none';
-        }
+            document.querySelectorAll('.suggestion-item').forEach(item => item.onclick = () => { searchInput.value = item.dataset.name; suggestionsDiv.style.display = 'none'; document.getElementById('searchBtn').click(); });
+        } else suggestionsDiv.style.display = 'none';
     });
-
-    document.getElementById('searchBtn').addEventListener('click', () => {
-        currentSearchTerm = searchInput.value.trim().toLowerCase();
-        suggestionsDiv.style.display = 'none';
-        displayFilteredOrders();
-    });
-
-    document.getElementById('clearSearchBtn').addEventListener('click', () => {
-        searchInput.value = '';
-        currentSearchTerm = '';
-        suggestionsDiv.style.display = 'none';
-        displayFilteredOrders();
-    });
-
-    document.getElementById('applyDateFilterBtn').addEventListener('click', () => {
-        currentDateFilter = document.getElementById('dateFilterSelect').value;
-        displayFilteredOrders();
-        updateStats();
-    });
+    document.getElementById('searchBtn').onclick = () => { currentSearchTerm = searchInput.value.trim().toLowerCase(); suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
+    document.getElementById('clearSearchBtn').onclick = () => { searchInput.value = ''; currentSearchTerm = ''; suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
+    document.getElementById('applyDateFilterBtn').onclick = () => { currentDateFilter = document.getElementById('dateFilterSelect').value; displayFilteredOrders(); updateStats(); };
 
     function displayFilteredOrders() {
         let filtered = [...allOrders];
         filtered = filterOrdersByDate(filtered);
-        
-        if (currentSearchTerm) {
-            filtered = filtered.filter(order => 
-                order.customerName.toLowerCase().includes(currentSearchTerm) ||
-                order.mobile.toLowerCase().includes(currentSearchTerm) ||
-                order.consumerNo.toLowerCase().includes(currentSearchTerm)
-            );
+        if (currentSearchTerm) filtered = filtered.filter(o => o.customerName.toLowerCase().includes(currentSearchTerm) || o.mobile.includes(currentSearchTerm) || o.consumerNo.includes(currentSearchTerm));
+        if (currentFilter === 'pending') filtered = filtered.filter(o => o.status === 'pending');
+        else if (currentFilter === 'processing') filtered = filtered.filter(o => o.status === 'processing');
+        else if (currentFilter === 'delivered') filtered = filtered.filter(o => o.status === 'delivered');
+        else if (currentFilter === 'old30') {
+            const oldSet = new Set();
+            filtered.forEach(o => { if (isCustomerOld(o.customerName, o.mobile, filtered)) oldSet.add(o.mobile); });
+            filtered = filtered.filter(o => oldSet.has(o.mobile));
         }
-        
-        if (currentFilter === 'pending') {
-            filtered = filtered.filter(order => order.status === 'pending');
-        } else if (currentFilter === 'processing') {
-            filtered = filtered.filter(order => order.status === 'processing');
-        } else if (currentFilter === 'delivered') {
-            filtered = filtered.filter(order => order.status === 'delivered');
-        } else if (currentFilter === 'old25') {
-            const oldCustomers = new Set();
-            filtered.forEach(order => {
-                if (isCustomerOld(order.customerName, order.mobile, filtered)) {
-                    oldCustomers.add(order.mobile);
-                }
-            });
-            filtered = filtered.filter(order => oldCustomers.has(order.mobile));
-        }
-        
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
         renderOrders(filtered);
     }
 
-    function makeCall(mobile) {
-        if (mobile && mobile.trim() !== '') {
-            window.location.href = `tel:${mobile.trim()}`;
-        } else {
-            alert('❌ इस ऑर्डर में मोबाइल नंबर नहीं है!');
-        }
-    }
+    function makeCall(mob) { if (mob && mob.trim()) window.location.href = `tel:${mob.trim()}`; else alert('❌ नंबर नहीं'); }
+    function moveToProcessing(id) { const dsc = prompt("DSC Code दें:"); if (!dsc) return; const tx = db.transaction(['orders'],'readwrite'); tx.objectStore('orders').get(id).onsuccess = (e) => { const o = e.target.result; if (!o.dscCode) { o.dscCode = dsc.toUpperCase(); db.transaction(['dscCodes'],'readwrite').objectStore('dscCodes').put({ dscCode: dsc.toUpperCase() }); } if (o.dscCode !== dsc.toUpperCase()) return alert('❌ DSC गलत'); o.status = 'processing'; tx.objectStore('orders').put(o); alert('✅ प्रोसेसिंग'); loadOrders(); updateStats(); }; }
+    function moveToDelivered(id) { const rm = prompt("डिलीवरी रिमार्क:"); const tx = db.transaction(['orders'],'readwrite'); tx.objectStore('orders').get(id).onsuccess = (e) => { const o = e.target.result; if (o.status !== 'processing') return alert('पहले प्रोसेसिंग करें'); o.status = 'delivered'; o.deliveredDate = new Date().toISOString(); o.deliveryRemark = rm || ''; tx.objectStore('orders').put(o); alert('✅ डिलीवर'); loadOrders(); updateStats(); }; }
+    function deleteOrder(id) { if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन'); if (confirm('हटाएं?')) { db.transaction(['orders'],'readwrite').objectStore('orders').delete(id).onsuccess = () => { loadOrders(); updateStats(); }; } }
 
-    function moveToProcessing(orderId) {
-        const dscInput = prompt("🔑 प्रोसेसिंग में भेजने के लिए DSC Code दर्ज करें:");
-        if (!dscInput) return;
-        const tx = db.transaction(['orders'], 'readwrite');
-        const store = tx.objectStore('orders');
-        store.get(orderId).onsuccess = (e) => {
-            const order = e.target.result;
-            if (!order.dscCode) {
-                order.dscCode = dscInput.toUpperCase();
-                const dscTx = db.transaction(['dscCodes'], 'readwrite');
-                dscTx.objectStore('dscCodes').put({ dscCode: dscInput.toUpperCase() });
-            }
-            if (order.dscCode !== dscInput.toUpperCase()) {
-                alert(`❌ DSC Code गलत!`);
-                return;
-            }
-            order.status = 'processing';
-            store.put(order);
-            alert(`✅ ऑर्डर प्रोसेसिंग में भेज दिया`);
-            loadOrders();
-            updateStats();
-        };
-    }
-
-    function moveToDelivered(orderId) {
-        const deliveryRemark = prompt("📝 डिलीवरी के समय रिमार्क लिखें (वैकल्पिक):");
-        const tx = db.transaction(['orders'], 'readwrite');
-        const store = tx.objectStore('orders');
-        store.get(orderId).onsuccess = (e) => {
-            const order = e.target.result;
-            if (order.status !== 'processing') return alert("केवल प्रोसेसिंग वाला ऑर्डर डिलीवर हो सकता है");
-            order.status = 'delivered';
-            order.deliveredDate = new Date().toISOString();
-            order.deliveryRemark = deliveryRemark || '';
-            store.put(order);
-            alert("✅ ऑर्डर डिलीवर हो गया");
-            loadOrders();
-            updateStats();
-        };
-    }
-
-    function deleteOrder(orderId) {
-        if (currentUser?.role !== 'admin') {
-            alert("❌ डिलीट करने की अनुमति सिर्फ एडमिन को है!");
-            return;
-        }
-        if (confirm("क्या आप यह ऑर्डर डिलीट करना चाहते हैं?")) {
-            const tx = db.transaction(['orders'], 'readwrite');
-            tx.objectStore('orders').delete(orderId).onsuccess = () => {
-                alert("🗑️ ऑर्डर डिलीट हो गया");
-                loadOrders();
-                updateStats();
-            };
-        }
-    }
-
-    function loadOrders() {
-        if (!db) return;
-        const tx = db.transaction(['orders'], 'readonly');
-        tx.objectStore('orders').getAll().onsuccess = (e) => {
-            allOrders = e.target.result || [];
-            displayFilteredOrders();
-            updateStats();
-        };
-    }
-
+    function loadOrders() { if (!db) return; db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => { allOrders = e.target.result || []; displayFilteredOrders(); updateStats(); }; }
     function renderOrders(orders) {
         const container = document.getElementById('ordersContainer');
-        if (!orders.length) {
-            container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>';
-            return;
-        }
+        if (!orders.length) { container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>'; return; }
         container.innerHTML = orders.map(order => {
-            const isCustomerOldFlag = isCustomerOld(order.customerName, order.mobile, orders);
-            const oldClass = isCustomerOldFlag ? 'old-customer' : '';
-            const showDeleteBtn = currentUser?.role === 'admin';
-            return `
-            <div class="order-item ${oldClass}">
-                <div class="order-header">
-                    <span>👤 ${escapeHtml(order.customerName)} ${isCustomerOldFlag ? '<span class="old-badge">⚠️ 25+ दिन</span>' : ''}</span>
-                    <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
-                </div>
-                <div class="order-details">
-                    🆔 कंज्यूमर: ${escapeHtml(order.consumerNo)}<br>
-                    ${order.dscCode ? `🔑 DSC: <span class="dsc-badge">${escapeHtml(order.dscCode)}</span><br>` : ''}
-                    📞 ${escapeHtml(order.mobile)}<br>
-                    📍 ${escapeHtml(order.address)}<br>
-                    🎯 ${order.cylinderType} - ₹${order.price}<br>
-                    ${order.remark ? `📝 नोट: ${escapeHtml(order.remark)}<br>` : ''}
-                    ${order.deliveryRemark ? `✅ डिलीवरी रिमार्क: ${escapeHtml(order.deliveryRemark)}<br>` : ''}
-                    📅 ऑर्डर तारीख: ${new Date(order.date).toLocaleString('hi-IN')}
-                    ${order.deliveredDate ? `<br>📅 डिलीवरी तारीख: ${new Date(order.deliveredDate).toLocaleString('hi-IN')}` : ''}
-                </div>
-                <div class="action-btns">
-                    ${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}
-                    ${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}
-                    <button class="action-btn call-btn" data-mobile="${order.mobile}" data-action="call">📞 Call</button>
-                    ${showDeleteBtn ? `<button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>` : ''}
-                </div>
-            </div>
-        `}).join('');
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.removeEventListener('click', handleAction);
-            btn.addEventListener('click', handleAction);
-        });
+            const isOld = isCustomerOld(order.customerName, order.mobile, orders);
+            return `<div class="order-item ${isOld ? 'old-customer' : ''}">
+                <div class="order-header"><span>👤 ${escapeHtml(order.customerName)} ${isOld ? '<span class="old-badge">⚠️ 30+ दिन</span>' : ''}</span><span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span></div>
+                <div class="order-details">🆔 ${escapeHtml(order.consumerNo)}<br>${order.dscCode ? `🔑 DSC: ${escapeHtml(order.dscCode)}<br>` : ''}📞 ${escapeHtml(order.mobile)}<br>📍 ${escapeHtml(order.address)}<br>🎯 ${order.cylinderType} - ₹${order.price}<br>${order.remark ? `📝 नोट: ${escapeHtml(order.remark)}<br>` : ''}${order.deliveryRemark ? `✅ रिमार्क: ${escapeHtml(order.deliveryRemark)}<br>` : ''}📅 ${new Date(order.date).toLocaleString('hi-IN')}${order.deliveredDate ? `<br>📅 डिलीवरी: ${new Date(order.deliveredDate).toLocaleString('hi-IN')}` : ''}</div>
+                <div class="action-btns">${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}<button class="action-btn call-btn" data-mobile="${order.mobile}" data-action="call">📞 Call</button>${currentUser?.role === 'admin' ? `<button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>` : ''}</div>
+            </div>`;
+        }).join('');
+        document.querySelectorAll('.action-btn').forEach(btn => btn.onclick = () => { const act = btn.dataset.action; if (act === 'processing') moveToProcessing(parseInt(btn.dataset.id)); else if (act === 'deliver') moveToDelivered(parseInt(btn.dataset.id)); else if (act === 'delete') deleteOrder(parseInt(btn.dataset.id)); else if (act === 'call') makeCall(btn.dataset.mobile); });
     }
 
-    function handleAction(e) {
-        const btn = e.currentTarget;
-        const action = btn.dataset.action;
-        if (action === 'processing') moveToProcessing(parseInt(btn.dataset.id));
-        else if (action === 'deliver') moveToDelivered(parseInt(btn.dataset.id));
-        else if (action === 'delete') deleteOrder(parseInt(btn.dataset.id));
-        else if (action === 'call') makeCall(btn.dataset.mobile);
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;')); }
     function updateStats() {
         if (!db) return;
-        let filteredOrders = [...allOrders];
-        filteredOrders = filterOrdersByDate(filteredOrders);
-        const delivered = filteredOrders.filter(o => o.status === 'delivered').length;
-        document.getElementById('totalDelivered').innerText = delivered;
-        document.getElementById('totalOrders').innerText = filteredOrders.length;
-        
-        const uniqueConsumers = new Set(filteredOrders.map(o => o.mobile));
-        document.getElementById('totalConsumers').innerText = uniqueConsumers.size;
-        
-        const uniqueDsc = new Set(filteredOrders.filter(o => o.dscCode).map(o => o.dscCode));
-        document.getElementById('totalDscCodes').innerText = uniqueDsc.size;
-        
-        const oldCustomersCount = getUniqueOldCustomersCount(filteredOrders);
-        document.getElementById('totalOldCustomers').innerText = oldCustomersCount;
+        let filtered = filterOrdersByDate([...allOrders]);
+        document.getElementById('totalDelivered').innerText = filtered.filter(o => o.status === 'delivered').length;
+        document.getElementById('totalOrders').innerText = filtered.length;
+        document.getElementById('totalConsumers').innerText = new Set(filtered.map(o => o.mobile)).size;
+        document.getElementById('totalDscCodes').innerText = new Set(filtered.filter(o => o.dscCode).map(o => o.dscCode)).size;
+        document.getElementById('totalOldCustomers').innerText = getUniqueOldCustomersCount(filtered);
     }
 
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            displayFilteredOrders();
-        });
-    });
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentFilter = btn.dataset.filter; displayFilteredOrders(); });
 
-    document.getElementById('backupBtn').addEventListener('click', async () => {
-        if (!db) return;
-        const tx = db.transaction(['orders', 'customers', 'dscCodes', 'agents'], 'readonly');
-        const orders = await new Promise((resolve) => tx.objectStore('orders').getAll().onsuccess = (e) => resolve(e.target.result));
-        const customers = await new Promise((resolve) => tx.objectStore('customers').getAll().onsuccess = (e) => resolve(e.target.result));
-        const dscCodes = await new Promise((resolve) => tx.objectStore('dscCodes').getAll().onsuccess = (e) => resolve(e.target.result));
-        const agents = await new Promise((resolve) => tx.objectStore('agents').getAll().onsuccess = (e) => resolve(e.target.result));
-        const backupData = { version: 1, date: new Date().toISOString(), orders, customers, dscCodes, agents };
-        const jsonStr = JSON.stringify(backupData, null, 2);
-        const blob = new Blob([jsonStr], { type: 'application/json' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `kartikey_gas_backup_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
-        link.click();
-        URL.revokeObjectURL(link.href);
-        alert('✅ बैकअप सफलतापूर्वक सेव हो गया!');
+    document.getElementById('backupBtn')?.addEventListener('click', async () => {
+        const tx = db.transaction(['orders','customers','dscCodes','agents'],'readonly');
+        const orders = await new Promise(r => tx.objectStore('orders').getAll().onsuccess = e => r(e.target.result));
+        const customers = await new Promise(r => tx.objectStore('customers').getAll().onsuccess = e => r(e.target.result));
+        const dscCodes = await new Promise(r => tx.objectStore('dscCodes').getAll().onsuccess = e => r(e.target.result));
+        const agents = await new Promise(r => tx.objectStore('agents').getAll().onsuccess = e => r(e.target.result));
+        const blob = new Blob([JSON.stringify({ orders, customers, dscCodes, agents }, null, 2)], {type:'application/json'});
+        const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `backup_${Date.now()}.json`; link.click(); alert('✅ बैकअप सेव');
     });
+    document.getElementById('restoreBtn')?.addEventListener('click', () => document.getElementById('restoreFileInput').click());
+    document.getElementById('restoreFileInput')?.addEventListener('change', (e) => { if(e.target.files[0]) restoreDataFromJson(e.target.files[0], (s) => { if(s) { loadOrders(); updateStats(); if(currentUser?.role === 'admin') loadAgentList(); } }); e.target.value = ''; });
+    document.getElementById('restoreBtnLogin')?.addEventListener('click', () => document.getElementById('restoreFileInputLogin').click());
+    document.getElementById('restoreFileInputLogin')?.addEventListener('change', (e) => { if(e.target.files[0]) restoreDataFromJson(e.target.files[0], (s) => { if(s && currentUser) { loadOrders(); updateStats(); if(currentUser?.role === 'admin') loadAgentList(); } }); e.target.value = ''; });
 
-    document.getElementById('restoreBtn').addEventListener('click', () => {
-        if (!dbReady) {
-            alert('डेटाबेस लोड हो रहा है');
-            return;
-        }
-        document.getElementById('restoreFileInput').click();
-    });
-    
-    document.getElementById('restoreFileInput').addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        restoreDataFromJson(file, (success) => {
-            if (success) {
-                loadOrders();
-                updateStats();
-                if (currentUser?.role === 'admin') loadAgentList();
-            }
-        });
-        e.target.value = '';
-    });
-
-    document.getElementById('exportExcelBtn').addEventListener('click', () => {
-        const tx = db.transaction(['orders'], 'readonly');
-        tx.objectStore('orders').getAll().onsuccess = (e) => {
+    document.getElementById('exportExcelBtn')?.addEventListener('click', () => {
+        db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => {
             const orders = e.target.result;
-            let html = `<html><head><meta charset="UTF-8"><title>Kartikey_Gas_Report</title><style>body { font-family: 'Times New Roman', Times, serif; } table { border-collapse: collapse; width:100%; } th, td { border:1px solid #000; padding: 6px; } th { background: #4f46e5; color:white; } .old-row { background: #fee2e2; }</style></head><body><h2>KARTIKEY BHARAT GAS रिपोर्ट</h2><table><thead><table><th>कंज्यूमर नंबर</th><th>DSC Code</th><th>ग्राहक नाम</th><th>मोबाइल</th><th>पता</th><th>सिलेंडर</th><th>कीमत</th><th>स्टेटस</th><th>रिमार्क</th><th>डिलीवरी तारीख</th><th>डिलीवरी रिमार्क</th><th>ऑर्डर तारीख</th><th>25+ दिन</th></tr></thead><tbody>`;
-            orders.forEach(o => {
-                const isOld = isCustomerOld(o.customerName, o.mobile, orders);
-                const rowClass = isOld ? 'class="old-row"' : '';
-                html += `<tr ${rowClass}>
-                    <td>${escapeHtml(o.consumerNo || '')}</td>
-                    <td>${escapeHtml(o.dscCode || '')}</td>
-                    <td>${escapeHtml(o.customerName || '')}</td>
-                    <td>${escapeHtml(o.mobile || '')}</td>
-                    <td>${escapeHtml(o.address || '')}</td>
-                    <td>${o.cylinderType || ''}</td>
-                    <td>${o.price || ''}</td>
-                    <td>${o.status === 'pending' ? 'पेंडिंग' : (o.status === 'processing' ? 'प्रोसेसिंग' : 'डिलीवर')}</td>
-                    <td>${escapeHtml(o.remark || '')}</td>
-                    <td>${o.deliveredDate ? new Date(o.deliveredDate).toLocaleString('hi-IN') : '-'}</td>
-                    <td>${escapeHtml(o.deliveryRemark || '')}</td>
-                    <td>${new Date(o.date).toLocaleString('hi-IN')}</td>
-                    <td>${isOld ? 'हाँ' : 'नहीं'}</td>
-                </tr>`;
-            });
-            html += `</tbody></table><p>जनरेटेड: ${new Date().toLocaleString()}</p></body></html>`;
-            const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `kartikey_gas_${Date.now()}.xls`;
-            link.click();
-            alert('✅ एक्सेल डाउनलोड हुआ');
+            let html = `<html><head><meta charset="UTF-8"><title>Report</title><style>th,td{border:1px solid #000;padding:6px;}th{background:#4f46e5;color:white;}</style></head><body><h2>रिपोर्ट</h2><table border="1"><thead><tr><th>कंज्यूमर</th><th>DSC</th><th>नाम</th><th>मोबाइल</th><th>पता</th><th>सिलेंडर</th><th>कीमत</th><th>स्टेटस</th><th>रिमार्क</th><th>डिलीवरी तारीख</th><th>डिलीवरी रिमार्क</th><th>ऑर्डर तारीख</th><th>30+ दिन</th></tr></thead><tbody>`;
+            orders.forEach(o => { const isOld = isCustomerOld(o.customerName, o.mobile, orders); html += `<tr style="${isOld ? 'background:#fee2e2' : ''}"><td>${escapeHtml(o.consumerNo||'')}</td><td>${escapeHtml(o.dscCode||'')}</td><td>${escapeHtml(o.customerName||'')}</td><td>${escapeHtml(o.mobile||'')}</td><td>${escapeHtml(o.address||'')}</td><td>${o.cylinderType||''}</td><td>${o.price||''}</td><td>${o.status}</td><td>${escapeHtml(o.remark||'')}</td><td>${o.deliveredDate ? new Date(o.deliveredDate).toLocaleString() : '-'}</td><td>${escapeHtml(o.deliveryRemark||'')}</td><td>${new Date(o.date).toLocaleString()}</td><td>${isOld ? 'हाँ' : 'नहीं'}</td></tr>`; });
+            html += `</tbody>}凿</body></html>`;
+            const link = document.createElement('a'); link.href = URL.createObjectURL(new Blob([html], {type:'application/vnd.ms-excel'})); link.download = `gas_report_${Date.now()}.xls`; link.click(); alert('✅ एक्सेल डाउनलोड');
         };
     });
 </script>
