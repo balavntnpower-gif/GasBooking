@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>KARTIKEY BHARAT GAS</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -16,105 +21,506 @@
             padding: 8px;
         }
         .login-container, .app {
-            max-width: 450px; width: 100%; background: white; border-radius: 28px;
-            overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
-        .login-card { padding: 25px 20px; text-align: center; }
+        .login-card {
+            padding: 25px 20px;
+            text-align: center;
+        }
         .login-card h2 {
-            font-size: 1.6rem; margin-bottom: 6px;
+            font-size: 1.6rem;
+            margin-bottom: 6px;
             background: linear-gradient(135deg, #f093fb, #f5576c);
-            background-clip: text; -webkit-background-clip: text; color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
         .login-card input {
-            width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #e2e8f0;
-            border-radius: 40px; font-size: 0.9rem; outline: none; background: #f8fafc;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            outline: none;
+            background: #f8fafc;
         }
         .login-card button {
-            width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white; border: none; border-radius: 40px; font-weight: bold;
-            font-size: 0.9rem; margin-top: 12px; cursor: pointer;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 12px;
+            cursor: pointer;
         }
-        .loading-msg { color: #667eea; font-size: 0.8rem; margin-top: 15px; display: none; }
-        .error-msg { color: #dc2626; font-size: 0.75rem; margin-top: 10px; display: none; }
-
-        .app { display: flex; flex-direction: column; height: 85vh; overflow: hidden; }
+        .loading-msg {
+            color: #667eea;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            display: none;
+        }
+        .error-msg {
+            color: #dc2626;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            display: none;
+        }
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+            overflow: hidden;
+            position: relative;
+        }
         .header {
-            background: linear-gradient(135deg, #f093fb, #f5576c); color: white;
-            padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 8px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
         .new-order-header-btn {
-            background: white; color: #f5576c; border: none; border-radius: 40px;
-            padding: 5px 12px; font-size: 0.7rem; font-weight: bold; cursor: pointer;
+            background: white;
+            color: #f5576c;
+            border: none;
+            border-radius: 40px;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
         .user-info {
-            display: flex; align-items: center; gap: 10px; font-size: 0.65rem;
-            background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.65rem;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 40px;
         }
-        .logout-btn { background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 30px; cursor: pointer; }
-
+        .logout-btn {
+            background: rgba(0,0,0,0.3);
+            padding: 4px 10px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
         .date-filter-row {
-            display: flex; gap: 8px; margin: 8px 8px 6px; align-items: center;
+            display: flex;
+            gap: 5px;
+            margin: 5px 10px;
+            align-items: center;
+            flex-shrink: 0;
         }
         .date-filter-row select {
-            flex: 1; padding: 9px 12px; border-radius: 25px; border: 1px solid #cbd5e1;
-            font-size: 0.78rem; background: white;
+            flex: 2;
+            padding: 5px 8px;
+            border-radius: 25px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.7rem;
+            background: white;
         }
         .date-filter-row button {
-            padding: 9px 16px; background: #4f46e5; color: white; border: none;
-            border-radius: 25px; font-size: 0.78rem; white-space: nowrap;
+            flex: 1;
+            padding: 5px 8px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.65rem;
+            cursor: pointer;
         }
-
         .stats-grid {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
-            margin: 6px 8px; flex-shrink: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin: 5px 8px;
+            flex-shrink: 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2); color: white;
-            padding: 10px 4px; border-radius: 14px; text-align: center;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 3px;
+            border-radius: 10px;
+            text-align: center;
         }
-        .stat-card.warning { background: linear-gradient(135deg, #f59e0b, #dc2626); }
-        .stat-card small { font-size: 0.68rem; display: block; margin-bottom: 3px; }
-        .stat-card h3 { font-size: 1.15rem; font-weight: bold; }
-
-        .backup-section { background: #f1f5f9; margin: 4px 8px; padding: 10px; border-radius: 12px; }
-        .backup-restore { background: #e0e7ff; padding: 12px; border-radius: 12px; text-align: center; }
-        .backup-restore button { padding: 9px 16px; margin: 4px; font-size: 0.8rem; border: none; border-radius: 8px; cursor: pointer; }
-
-        .orders-list { flex: 1; overflow-y: auto; margin: 5px 8px; }
+        .stat-card small {
+            font-size: 7px;
+            display: block;
+        }
+        .stat-card h3 {
+            font-size: 0.9rem;
+        }
+        .stat-card.warning {
+            background: linear-gradient(135deg, #f59e0b, #dc2626);
+        }
+        .search-container {
+            margin: 4px 8px;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .search-box {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 35px;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 5px;
+            font-size: 0.7rem;
+            outline: none;
+        }
+        .search-box button {
+            width: auto;
+            padding: 3px 10px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.6rem;
+            cursor: pointer;
+        }
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-height: 120px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+        .suggestion-item {
+            padding: 5px 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.65rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 24px;
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #4f46e5;
+        }
+        .modal-content .form-group {
+            margin-bottom: 12px;
+        }
+        .modal-content .form-group label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .modal-content .form-group input, 
+        .modal-content .form-group select, 
+        .modal-content .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.8rem;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px;
+            border-radius: 40px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .submit-order-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .cancel-modal-btn {
+            background: #e2e8f0;
+            color: #334155;
+        }
+        .admin-panel {
+            background: #f1f5f9;
+            margin: 4px 8px;
+            padding: 5px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+        .admin-panel h4 {
+            font-size: 0.65rem;
+            margin-bottom: 3px;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 5px;
+            margin: 5px 0;
+            flex-wrap: wrap;
+        }
+        .admin-actions button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 4px 8px;
+            font-size: 0.6rem;
+            cursor: pointer;
+        }
+        .agent-row {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .agent-row input {
+            flex: 1;
+            padding: 3px 5px;
+            border-radius: 25px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.6rem;
+        }
+        .small-btn {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 3px 6px;
+            font-size: 0.55rem;
+            cursor: pointer;
+        }
+        .agent-list {
+            font-size: 0.55rem;
+            margin-top: 5px;
+            max-height: 80px;
+            overflow-y: auto;
+        }
+        .agent-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .agent-info {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .agent-username {
+            font-weight: bold;
+        }
+        .agent-password {
+            font-family: monospace;
+            background: #e2e8f0;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.55rem;
+        }
+        .toggle-pwd-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 2px 6px;
+            font-size: 0.5rem;
+            cursor: pointer;
+        }
+        .delete-agent-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 2px 6px;
+            font-size: 0.5rem;
+            cursor: pointer;
+        }
+        .backup-restore-bar {
+            display: flex;
+            gap: 8px;
+            margin: 5px 8px;
+            flex-shrink: 0;
+        }
+        .backup-restore-bar button {
+            flex: 1;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .orders-list {
+            margin: 3px 8px 5px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        .orders-list h3 {
+            font-size: 0.7rem;
+            margin-bottom: 5px;
+        }
         .order-item {
-            background: white; border: 1px solid #e5e7eb; border-radius: 10px;
-            padding: 8px; margin-bottom: 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 8px;
         }
-        .order-item.old-customer { border: 2px solid #dc2626; background: #fef2f2; }
-        .old-badge { background: #dc2626; color: white; padding: 2px 8px; border-radius: 16px; font-size: 0.6rem; }
-        .action-btns { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+        .order-item.old-customer {
+            border: 2px solid #dc2626;
+            background: #fef2f2;
+        }
+        .old-badge {
+            background: #dc2626;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 16px;
+            font-size: 0.6rem;
+            font-weight: bold;
+            margin-left: 6px;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 0.8rem;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .order-details {
+            font-size: 0.7rem;
+            color: #1f2937;
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        .order-details strong {
+            font-weight: bold;
+        }
+        .order-details .consumer-mob {
+            font-weight: bold;
+            font-size: 0.8rem;
+            color: #1e3a8a;
+        }
+        .status {
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-processing { background: #dbeafe; color: #1e40af; }
+        .status-delivered { background: #d1fae5; color: #065f46; }
+        .action-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
         .action-btn {
-            padding: 4px 10px; font-size: 0.65rem; font-weight: bold;
-            border-radius: 20px; cursor: pointer; border: none;
+            padding: 4px 10px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            width: auto;
+            border-radius: 20px;
+            cursor: pointer;
+            border: none;
         }
         .processing-btn { background: #10b981; color: white; }
         .deliver-btn { background: #3b82f6; color: white; }
         .delete-btn { background: #ef4444; color: white; }
         .call-btn { background: #22c55e; color: white; }
-        .nav { display: flex; gap: 3px; padding: 6px 8px; background: white; border-top: 1px solid #e5e7eb; flex-shrink: 0; }
+        .nav {
+            display: flex;
+            gap: 3px;
+            padding: 6px 8px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
         .nav-btn {
-            background: #f1f5f9; color: #334155; flex: 1; padding: 6px 4px;
-            font-size: 0.68rem; font-weight: bold; border: none; border-radius: 20px; cursor: pointer;
+            background: #f1f5f9;
+            color: #334155;
+            flex: 1;
+            padding: 5px 4px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
         }
-        .nav-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:1000; }
-        .modal-content {
-            background:white; width:90%; max-width:400px; border-radius:24px;
-            padding:20px; max-height:90vh; overflow-y:auto;
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
         }
-        .empty-state { text-align:center; padding:20px; color:#94a3b8; }
+        .empty-state {
+            text-align: center;
+            padding: 15px;
+            color: #94a3b8;
+            font-size: 0.7rem;
+        }
+        .file-input {
+            display: none;
+        }
+        button {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<!-- Login Screen -->
 <div id="loginScreen" class="login-container">
     <div class="login-card">
         <h2>🚚 KARTIKEY BHARAT GAS</h2>
@@ -123,7 +529,7 @@
         <input type="password" id="loginPassword" placeholder="पासवर्ड">
         <div id="loadingMsg" class="loading-msg">⏳ डेटाबेस लोड हो रहा है...</div>
         <button id="doLoginBtn" style="display:none;">लॉगिन करें</button>
-        <button id="restoreBtnLogin" style="display:none; margin-top:8px; background:#f59e0b;">📥 रिस्टोर बैकअप</button>
+        <button id="restoreBtnLogin" style="display:none;">🔄 रिस्टोर</button>
         <div id="loginError" class="error-msg">गलत यूजरनेम या पासवर्ड</div>
     </div>
     <input type="file" id="restoreFileInputLogin" accept=".json" style="display:none">
@@ -167,22 +573,20 @@
         <div id="suggestions" class="suggestions"></div>
     </div>
 
-    <div id="backupSection" class="backup-section">
-        <div class="backup-restore">
-            <button id="backupBtn">📤 बैकअप डाउनलोड</button>
-            <button id="restoreBtn">📥 रिस्टोर (Merge)</button>
-            <input type="file" id="restoreFileInput" accept=".json" style="display:none">
-        </div>
+    <!-- Backup/Restore Bar - सभी यूजर्स के लिए -->
+    <div class="backup-restore-bar">
+        <button id="backupBtn">💾 बैकअप लें</button>
+        <button id="restoreBtn">🔄 रिस्टोर करें (Merge)</button>
     </div>
 
     <div id="adminPanel" class="admin-panel" style="display: none;">
-        <h4>👑 एडमिन पैनल</h4>
+        <h4>👑 एडमिन: डिलीवरी एजेंट मैनेज</h4>
         <div class="agent-row">
             <input type="text" id="newAgentUser" placeholder="यूजरनेम">
             <input type="text" id="newAgentPass" placeholder="पासवर्ड">
             <button id="createAgentBtn" class="small-btn">➕ बनाएं</button>
         </div>
-        <div id="agentListDisplay" class="agent-list"></div>
+        <div id="agentListDisplay" class="agent-list">📋 एजेंट लिस्ट: </div>
     </div>
 
     <div class="orders-list">
@@ -199,30 +603,28 @@
     </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal for New Order -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
         <h3>🛒 नया ऑर्डर</h3>
         <div class="form-group"><label>कंज्यूमर नंबर</label><input id="modalConsumerNo" placeholder="1234567890"></div>
         <div class="form-group"><label>मोबाइल</label><input id="modalMobile" placeholder="9876543210"></div>
         <div class="form-group"><label>ग्राहक नाम</label><input id="modalCustomerName" placeholder="राम कुमार"></div>
-        <div class="form-group"><label>सिलेंडर</label>
-            <select id="modalCylinderType">
-                <option value="14.2kg">14.2 kg (₹985)</option>
-                <option value="19kg">19 kg (₹3050)</option>
-            </select>
-        </div>
+        <div class="form-group"><label>सिलेंडर</label><select id="modalCylinderType"><option value="14.2kg">14.2 kg (₹985)</option><option value="19kg">19 kg (₹3050)</option></select></div>
         <div class="form-group"><label>पता</label><input id="modalAddress" placeholder="मेन रोड, दिल्ली"></div>
         <div class="form-group"><label>रिमार्क</label><textarea id="modalRemark" placeholder="नोट्स..."></textarea></div>
-        <div class="modal-buttons">
-            <button class="submit-order-btn" id="modalSubmitBtn">✅ ऑर्डर करें</button>
-            <button class="cancel-modal-btn" id="modalCancelBtn">❌ रद्द करें</button>
-        </div>
+        <div class="modal-buttons"><button class="submit-order-btn" id="modalSubmitBtn">✅ ऑर्डर करें</button><button class="cancel-modal-btn" id="modalCancelBtn">❌ रद्द करें</button></div>
     </div>
 </div>
 
 <script>
-    let db, currentUser = null, currentFilter = 'all', currentSearchTerm = '', allOrders = [], currentDateFilter = 'all', dbReady = false;
+    let db;
+    let currentUser = null;
+    let currentFilter = 'all';
+    let currentSearchTerm = '';
+    let allOrders = [];
+    let currentDateFilter = 'all';
+    let dbReady = false;
 
     const cylinderPrices = { '14.2kg': 985, '19kg': 3050 };
     const ADMIN_USER = { username: 'Hindu', password: 'Lion', role: 'admin' };
@@ -232,12 +634,13 @@
     ];
 
     function initDB() {
-        const req = indexedDB.open('GasDeliveryDB', 24);
+        const req = indexedDB.open('GasDeliveryDB', 25);
         req.onupgradeneeded = (e) => {
             db = e.target.result;
             if (!db.objectStoreNames.contains('orders')) {
                 const orderStore = db.createObjectStore('orders', { keyPath: 'id', autoIncrement: true });
                 orderStore.createIndex('status', 'status');
+                orderStore.createIndex('customerName', 'customerName');
                 orderStore.createIndex('mobile', 'mobile');
                 orderStore.createIndex('date', 'date');
             }
@@ -256,189 +659,9 @@
             document.getElementById('restoreBtnLogin').style.display = 'block';
             checkSession();
         };
+        req.onerror = () => { document.getElementById('loadingMsg').innerHTML = '❌ डेटाबेस एरर'; };
     }
     initDB();
-
-    async function mergeStore(storeName, newItems) {
-        return new Promise(resolve => {
-            const tx = db.transaction([storeName], 'readwrite');
-            const store = tx.objectStore(storeName);
-            newItems.forEach(item => store.put(item));
-            tx.oncomplete = resolve;
-        });
-    }
-
-    function restoreDataFromJson(file, callback) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-            try {
-                const backupData = JSON.parse(event.target.result);
-                if (!backupData.orders || !backupData.customers || !backupData.dscCodes || !backupData.agents) throw new Error();
-
-                if (!confirm('📥 बैकअप रिस्टोर करना चाहते हैं?\nपुराना डेटा रहेगा और नया डेटा Merge हो जाएगा')) return callback(false);
-
-                await mergeStore('orders', backupData.orders);
-                await mergeStore('customers', backupData.customers);
-                await mergeStore('dscCodes', backupData.dscCodes);
-                await mergeStore('agents', backupData.agents);
-
-                alert('✅ डेटा Merge हो गया!');
-                callback(true);
-            } catch (err) {
-                alert('❌ गलत JSON फाइल');
-                callback(false);
-            }
-        };
-        reader.readAsText(file);
-    }
-
-    // Backup
-    document.getElementById('backupBtn').onclick = async () => {
-        const tx = db.transaction(['orders','customers','dscCodes','agents'],'readonly');
-        const orders = await new Promise(r => tx.objectStore('orders').getAll().onsuccess = e => r(e.target.result));
-        const customers = await new Promise(r => tx.objectStore('customers').getAll().onsuccess = e => r(e.target.result));
-        const dscCodes = await new Promise(r => tx.objectStore('dscCodes').getAll().onsuccess = e => r(e.target.result));
-        const agents = await new Promise(r => tx.objectStore('agents').getAll().onsuccess = e => r(e.target.result));
-
-        const backupData = { orders, customers, dscCodes, agents };
-        const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `KARTIKEY_GAS_BACKUP_${new Date().toISOString().slice(0,10)}.json`;
-        link.click();
-        alert('✅ बैकअप डाउनलोड हो गया');
-    };
-
-    function showApp() {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('mainApp').style.display = 'flex';
-        const isAdmin = currentUser.role === 'admin';
-        document.getElementById('userRoleBadge').innerText = isAdmin ? '👑 एडमिन' : '🚚 एजेंट';
-        document.getElementById('adminPanel').style.display = isAdmin ? 'block' : 'none';
-        document.getElementById('backupSection').style.display = 'block';
-
-        if (isAdmin) loadAgentList();
-        loadOrders();
-        updateStats();
-    }
-
-    function checkSession() {
-        if (dbReady && localStorage.getItem('currentUser')) {
-            currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            showApp();
-        }
-    }
-
-    // Login
-    document.getElementById('doLoginBtn').onclick = () => {
-        const uname = document.getElementById('loginUsername').value.trim();
-        const pwd = document.getElementById('loginPassword').value.trim();
-
-        if (uname === ADMIN_USER.username && pwd === ADMIN_USER.password) {
-            currentUser = { username: ADMIN_USER.username, role: 'admin' };
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            showApp();
-            return;
-        }
-
-        db.transaction(['agents'], 'readonly').objectStore('agents').get(uname).onsuccess = (e) => {
-            const agent = e.target.result;
-            if (agent && agent.password === pwd) {
-                currentUser = { username: agent.username, role: 'agent' };
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                showApp();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-                setTimeout(() => document.getElementById('loginError').style.display = 'none', 2500);
-            }
-        };
-    };
-
-    document.getElementById('logoutBtn').onclick = () => {
-        currentUser = null; localStorage.clear();
-        document.getElementById('loginScreen').style.display = 'block';
-        document.getElementById('mainApp').style.display = 'none';
-    };
-
-    // Agent List
-    function loadAgentList() {
-        db.transaction(['agents'], 'readonly').objectStore('agents').getAll().onsuccess = (e) => {
-            let html = '';
-            e.target.result.forEach(agent => {
-                if (DEFAULT_AGENTS.some(a => a.username === agent.username)) {
-                    html += `<div class="agent-item"><span>🔑 ${agent.username} (डिफॉल्ट)</span></div>`;
-                } else {
-                    html += `<div class="agent-item"><span>🔑 ${agent.username}</span><button class="delete-agent-btn" data-agent="${agent.username}">🗑️</button></div>`;
-                }
-            });
-            document.getElementById('agentListDisplay').innerHTML = html || 'कोई एजेंट नहीं';
-        };
-    }
-
-    document.getElementById('createAgentBtn').onclick = () => {
-        const nu = document.getElementById('newAgentUser').value.trim();
-        const np = document.getElementById('newAgentPass').value.trim();
-        if (!nu || !np) return alert('यूजरनेम और पासवर्ड भरें');
-        const tx = db.transaction(['agents'], 'readwrite');
-        tx.objectStore('agents').get(nu).onsuccess = (e) => {
-            if (e.target.result) return alert('यह यूजरनेम पहले से है');
-            tx.objectStore('agents').add({ username: nu, password: np, role: 'agent' });
-            tx.oncomplete = () => {
-                alert(`✅ ${nu} बना दिया गया`);
-                document.getElementById('newAgentUser').value = '';
-                document.getElementById('newAgentPass').value = '';
-                loadAgentList();
-            };
-        };
-    };
-
-    // Modal Logic
-    const modal = document.getElementById('orderModal');
-    document.getElementById('newOrderHeaderBtn').onclick = () => modal.style.display = 'flex';
-    document.getElementById('modalCancelBtn').onclick = () => modal.style.display = 'none';
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = 'none'; };
-
-    document.getElementById('modalSubmitBtn').onclick = () => {
-        const cn = document.getElementById('modalConsumerNo').value.trim();
-        const name = document.getElementById('modalCustomerName').value.trim();
-        const mob = document.getElementById('modalMobile').value.trim();
-        const addr = document.getElementById('modalAddress').value.trim();
-        const cyl = document.getElementById('modalCylinderType').value;
-        const rem = document.getElementById('modalRemark').value.trim();
-
-        if (!cn || !name || !mob || !addr) return alert('सभी जरूरी फील्ड भरें');
-
-        const newOrder = {
-            consumerNo: cn, customerName: name, mobile: mob, address: addr,
-            cylinderType: cyl, price: cylinderPrices[cyl], status: 'pending',
-            remark: rem, dscCode: null, date: new Date().toISOString(),
-            deliveredDate: null, deliveryRemark: null
-        };
-
-        db.transaction(['orders'], 'readwrite').objectStore('orders').add(newOrder).onsuccess = () => {
-            alert('✅ नया ऑर्डर जमा हो गया');
-            modal.style.display = 'none';
-            document.querySelectorAll('#modalConsumerNo,#modalCustomerName,#modalMobile,#modalAddress,#modalRemark').forEach(el => el.value = '');
-            loadOrders();
-            updateStats();
-        };
-    };
-
-    // Search
-    const searchInput = document.getElementById('searchInput');
-    const suggestionsDiv = document.getElementById('suggestions');
-
-    searchInput.addEventListener('input', () => {
-        const term = searchInput.value.toLowerCase().trim();
-        if (term.length < 2) { suggestionsDiv.style.display = 'none'; return; }
-        const matches = [...new Set(allOrders.map(o => o.customerName).filter(Boolean))].filter(n => n.toLowerCase().includes(term)).slice(0,5);
-        suggestionsDiv.innerHTML = matches.map(name => `<div class="suggestion-item" data-name="${name}">🔍 ${name}</div>`).join('');
-        suggestionsDiv.style.display = matches.length ? 'block' : 'none';
-    });
-
-    document.getElementById('searchBtn').onclick = () => { currentSearchTerm = searchInput.value.trim().toLowerCase(); suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
-    document.getElementById('clearSearchBtn').onclick = () => { searchInput.value = ''; currentSearchTerm = ''; suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
-    document.getElementById('applyDateFilterBtn').onclick = () => { currentDateFilter = document.getElementById('dateFilterSelect').value; displayFilteredOrders(); updateStats(); };
 
     function getDateFromFilter() {
         const today = new Date(); today.setHours(0,0,0,0);
@@ -450,142 +673,463 @@
     }
 
     function filterOrdersByDate(orders) {
-        if (currentDateFilter === 'all') return orders;
+        if (!currentDateFilter || currentDateFilter === 'all') return orders;
         const range = getDateFromFilter();
         if (!range) return orders;
-        return orders.filter(o => {
-            const od = new Date(o.date); od.setHours(0,0,0,0);
-            return od >= range.start && od < range.end;
-        });
+        return orders.filter(order => { const od = new Date(order.date); od.setHours(0,0,0,0); return od >= range.start && od < range.end; });
     }
 
-    function isCustomerOld(name, mobile, list = allOrders) {
-        const custOrders = list.filter(o => o.customerName === name || o.mobile === mobile);
-        if (!custOrders.length) return false;
-        const latest = custOrders.reduce((a,b) => new Date(b.date) > new Date(a.date) ? b : a);
-        return Math.ceil((new Date() - new Date(latest.date)) / 86400000) >= 25;
+    function isCustomerOld(customerName, mobile, ordersList = null) {
+        const ordersToCheck = ordersList || allOrders;
+        const customerOrders = ordersToCheck.filter(order => order.customerName === customerName || order.mobile === mobile);
+        if (customerOrders.length === 0) return false;
+        const latestOrder = customerOrders.reduce((latest, current) => new Date(current.date) > new Date(latest.date) ? current : latest);
+        const diffDays = Math.ceil((new Date() - new Date(latestOrder.date)) / (1000 * 60 * 60 * 24));
+        return diffDays >= 25;
     }
 
     function getUniqueOldCustomersCount(ordersList) {
-        const unique = new Map();
-        ordersList.forEach(o => {
-            if (!unique.has(o.mobile) || new Date(o.date) > new Date(unique.get(o.mobile).date)) unique.set(o.mobile, o);
+        const uniqueCustomers = new Map();
+        ordersList.forEach(order => {
+            const key = order.mobile;
+            if (!uniqueCustomers.has(key) || new Date(order.date) > new Date(uniqueCustomers.get(key).date)) {
+                uniqueCustomers.set(key, { name: order.customerName, mobile: order.mobile, date: order.date });
+            }
         });
-        let count = 0;
-        unique.forEach(o => { if (Math.ceil((new Date() - new Date(o.date)) / 86400000) >= 25) count++; });
-        return count;
+        let oldCount = 0;
+        for (let customer of uniqueCustomers.values()) {
+            const diffDays = Math.ceil((new Date() - new Date(customer.date)) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 25) oldCount++;
+        }
+        return oldCount;
     }
 
-    function loadOrders() {
-        db.transaction(['orders'], 'readonly').objectStore('orders').getAll().onsuccess = (e) => {
-            allOrders = e.target.result || [];
-            displayFilteredOrders();
+    // 🔥 MERGE RESTORE FUNCTION - पुराना डेटा नहीं हटेगा, सिर्फ मर्ज होगा
+    function restoreDataMerge(backupData, callback) {
+        if (!backupData.orders && !backupData.customers && !backupData.dscCodes && !backupData.agents) {
+            alert('❌ गलत फाइल फॉर्मेट');
+            if(callback) callback(false);
+            return;
+        }
+        
+        if (!confirm('⚠️ इस JSON फाइल से डेटा मर्ज किया जाएगा (पुराना डेटा रहेगा)। जारी रखें?')) {
+            if(callback) callback(false);
+            return;
+        }
+        
+        let promises = [];
+        
+        // Orders Merge (अगर पहले से मौजूद है तो स्किप करना बेहतर, लेकिन यहाँ हम सिर्फ नए जोड़ेंगे)
+        if (backupData.orders && backupData.orders.length) {
+            promises.push(new Promise((resolve) => {
+                const tx = db.transaction(['orders'], 'readwrite');
+                const store = tx.objectStore('orders');
+                // पहले से मौजूद IDs का सेट लें
+                const getAllReq = store.getAll();
+                getAllReq.onsuccess = () => {
+                    const existingIds = new Set(getAllReq.result.map(o => o.id));
+                    let added = 0;
+                    backupData.orders.forEach(order => {
+                        // नया order बिना id के डालें (autoIncrement)
+                        if (!order.id || !existingIds.has(order.id)) {
+                            const newOrder = { ...order };
+                            delete newOrder.id;
+                            store.add(newOrder);
+                            added++;
+                        }
+                    });
+                    resolve(added);
+                };
+                getAllReq.onerror = () => resolve(0);
+            }));
+        }
+        
+        // Customers Merge (mobile के हिसाब से)
+        if (backupData.customers && backupData.customers.length) {
+            promises.push(new Promise((resolve) => {
+                const tx = db.transaction(['customers'], 'readwrite');
+                const store = tx.objectStore('customers');
+                let added = 0;
+                backupData.customers.forEach(customer => {
+                    const req = store.get(customer.mobile);
+                    req.onsuccess = () => {
+                        if (!req.result) {
+                            store.put(customer);
+                            added++;
+                        }
+                    };
+                });
+                tx.oncomplete = () => resolve(added);
+                setTimeout(() => resolve(added), 500);
+            }));
+        }
+        
+        // DSC Codes Merge
+        if (backupData.dscCodes && backupData.dscCodes.length) {
+            promises.push(new Promise((resolve) => {
+                const tx = db.transaction(['dscCodes'], 'readwrite');
+                const store = tx.objectStore('dscCodes');
+                let added = 0;
+                backupData.dscCodes.forEach(dsc => {
+                    const req = store.get(dsc.dscCode);
+                    req.onsuccess = () => {
+                        if (!req.result) {
+                            store.put(dsc);
+                            added++;
+                        }
+                    };
+                });
+                tx.oncomplete = () => resolve(added);
+                setTimeout(() => resolve(added), 500);
+            }));
+        }
+        
+        // Agents Merge (डिफॉल्ट एजेंट्स को ओवरराइड न करें)
+        if (backupData.agents && backupData.agents.length && currentUser?.role === 'admin') {
+            promises.push(new Promise((resolve) => {
+                const tx = db.transaction(['agents'], 'readwrite');
+                const store = tx.objectStore('agents');
+                let added = 0;
+                backupData.agents.forEach(agent => {
+                    if (agent.username === 'Hindu') return;
+                    const req = store.get(agent.username);
+                    req.onsuccess = () => {
+                        if (!req.result) {
+                            store.put(agent);
+                            added++;
+                        }
+                    };
+                });
+                tx.oncomplete = () => resolve(added);
+                setTimeout(() => resolve(added), 500);
+            }));
+        }
+        
+        Promise.all(promises).then(() => {
+            alert('✅ डेटा मर्ज हो गया!');
+            loadOrders();
             updateStats();
+            if (currentUser?.role === 'admin') loadAgentList();
+            if(callback) callback(true);
+        }).catch(err => {
+            alert('❌ मर्ज करते समय एरर: ' + err.message);
+            if(callback) callback(false);
+        });
+    }
+    
+    function exportBackup() {
+        const tx = db.transaction(['orders','customers','dscCodes','agents'], 'readonly');
+        tx.objectStore('orders').getAll().onsuccess = (e1) => {
+            const orders = e1.target.result;
+            tx.objectStore('customers').getAll().onsuccess = (e2) => {
+                const customers = e2.target.result;
+                tx.objectStore('dscCodes').getAll().onsuccess = (e3) => {
+                    const dscCodes = e3.target.result;
+                    tx.objectStore('agents').getAll().onsuccess = (e4) => {
+                        const agents = e4.target.result;
+                        const backupData = { orders, customers, dscCodes, agents, exportDate: new Date().toISOString() };
+                        const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `gas_backup_${Date.now()}.json`;
+                        link.click();
+                        alert('✅ बैकअप सेव हो गया');
+                    };
+                };
+            };
+        };
+    }
+    
+    function deleteAgent(agentUsername) {
+        if (currentUser?.role !== 'admin') return;
+        if (DEFAULT_AGENTS.some(a => a.username === agentUsername)) return alert('⚠️ डिफॉल्ट एजेंट नहीं हटेगा');
+        if (confirm(`हटाएं "${agentUsername}"?`)) {
+            const tx = db.transaction(['agents'],'readwrite');
+            tx.objectStore('agents').delete(agentUsername);
+            tx.oncomplete = () => { alert('✅ हटा दिया'); loadAgentList(); };
+        }
+    }
+    
+    // पासवर्ड टॉगल करने का फंक्शन
+    let passwordVisible = false;
+    function togglePasswords(containerId) {
+        const pwdSpans = document.querySelectorAll('.agent-password');
+        pwdSpans.forEach(span => {
+            const actualPwd = span.getAttribute('data-pwd');
+            if (span.innerText === '••••••') {
+                span.innerText = actualPwd;
+            } else {
+                span.innerText = '••••••';
+            }
+        });
+    }
+
+    function loadAgentList() {
+        if (!db || currentUser?.role !== 'admin') return;
+        const tx = db.transaction(['agents'],'readonly');
+        tx.objectStore('agents').getAll().onsuccess = (e) => {
+            let html = '';
+            e.target.result.forEach(agent => {
+                const isDefault = DEFAULT_AGENTS.some(a => a.username === agent.username);
+                html += `<div class="agent-item">
+                            <div class="agent-info">
+                                <span class="agent-username">🔑 ${agent.username}</span>
+                                <span class="agent-password" data-pwd="${agent.password}">••••••</span>
+                                <button class="toggle-pwd-btn" data-agent="${agent.username}">👁️ दिखाएं</button>
+                            </div>`;
+                if (!isDefault) {
+                    html += `<button class="delete-agent-btn" data-agent="${agent.username}">🗑️</button>`;
+                } else {
+                    html += `<span style="font-size:0.5rem; color:green;">(डिफॉल्ट)</span>`;
+                }
+                html += `</div>`;
+            });
+            document.getElementById('agentListDisplay').innerHTML = html || '<div>कोई एजेंट नहीं</div>';
+            
+            // टॉगल बटन के इवेंट
+            document.querySelectorAll('.toggle-pwd-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const parent = btn.closest('.agent-item');
+                    const pwdSpan = parent.querySelector('.agent-password');
+                    const actualPwd = pwdSpan.getAttribute('data-pwd');
+                    if (pwdSpan.innerText === '••••••') {
+                        pwdSpan.innerText = actualPwd;
+                        btn.innerText = '🙈 छिपाएं';
+                    } else {
+                        pwdSpan.innerText = '••••••';
+                        btn.innerText = '👁️ दिखाएं';
+                    }
+                };
+            });
+            
+            document.querySelectorAll('.delete-agent-btn')?.forEach(btn => btn.onclick = () => deleteAgent(btn.dataset.agent));
         };
     }
 
-    function displayFilteredOrders() {
-        let filtered = filterOrdersByDate([...allOrders]);
-        if (currentSearchTerm) {
-            filtered = filtered.filter(o => 
-                (o.customerName && o.customerName.toLowerCase().includes(currentSearchTerm)) ||
-                o.mobile.includes(currentSearchTerm) || 
-                (o.consumerNo && o.consumerNo.includes(currentSearchTerm))
-            );
+    document.getElementById('doLoginBtn').onclick = () => {
+        if (!dbReady) return alert('डेटाबेस लोड हो रहा');
+        const uname = document.getElementById('loginUsername').value.trim();
+        const pwd = document.getElementById('loginPassword').value.trim();
+        if (uname === ADMIN_USER.username && pwd === ADMIN_USER.password) {
+            currentUser = { username: ADMIN_USER.username, role: 'admin' };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showApp(); return;
         }
+        const tx = db.transaction(['agents'],'readonly');
+        tx.objectStore('agents').get(uname).onsuccess = (e) => {
+            const agent = e.target.result;
+            if (agent && agent.password === pwd) {
+                currentUser = { username: agent.username, role: 'agent' };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showApp();
+            } else { document.getElementById('loginError').style.display = 'block'; setTimeout(() => document.getElementById('loginError').style.display = 'none', 2000); }
+        };
+    };
+
+    function showApp() {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'flex';
+        document.getElementById('userRoleBadge').innerText = currentUser.role === 'admin' ? '👑 एडमिन' : '🚚 एजेंट';
+        if (currentUser.role === 'admin') { 
+            document.getElementById('adminPanel').style.display = 'block'; 
+            loadAgentList(); 
+        } else {
+            document.getElementById('adminPanel').style.display = 'none';
+        }
+        loadOrders(); 
+        updateStats();
+    }
+
+    function checkSession() { 
+        if (dbReady && localStorage.getItem('currentUser')) { 
+            currentUser = JSON.parse(localStorage.getItem('currentUser')); 
+            showApp(); 
+        } 
+    }
+    
+    document.getElementById('logoutBtn').onclick = () => { 
+        currentUser = null; 
+        localStorage.clear(); 
+        document.getElementById('loginScreen').style.display = 'block'; 
+        document.getElementById('mainApp').style.display = 'none'; 
+    };
+
+    document.getElementById('createAgentBtn').onclick = () => {
+        if (currentUser?.role !== 'admin') return;
+        const nu = document.getElementById('newAgentUser').value.trim();
+        const np = document.getElementById('newAgentPass').value.trim();
+        if (!nu || !np) return alert('यूजरनेम/पासवर्ड दें');
+        const tx = db.transaction(['agents'],'readwrite');
+        tx.objectStore('agents').get(nu).onsuccess = (e) => {
+            if (e.target.result) return alert('पहले से है');
+            tx.objectStore('agents').add({ username: nu, password: np, role: 'agent' });
+            tx.oncomplete = () => { alert(`✅ ${nu} बना`); document.getElementById('newAgentUser').value = ''; document.getElementById('newAgentPass').value = ''; loadAgentList(); };
+        };
+    };
+
+    // Modal Logic for New Order
+    const modal = document.getElementById('orderModal');
+    const newOrderBtn = document.getElementById('newOrderHeaderBtn');
+    
+    newOrderBtn.onclick = () => {
+        modal.style.display = 'flex';
+    };
+    
+    document.getElementById('modalCancelBtn').onclick = () => {
+        modal.style.display = 'none';
+    };
+    
+    window.onclick = (e) => {
+        if (e.target === modal) modal.style.display = 'none';
+    };
+
+    document.getElementById('modalSubmitBtn').onclick = () => {
+        const cn = document.getElementById('modalConsumerNo').value.trim();
+        const name = document.getElementById('modalCustomerName').value.trim();
+        const mob = document.getElementById('modalMobile').value.trim();
+        const addr = document.getElementById('modalAddress').value.trim();
+        const cyl = document.getElementById('modalCylinderType').value;
+        const rem = document.getElementById('modalRemark').value;
+        if (!cn || !name || !mob || !addr) { alert('सभी जरूरी फील्ड भरें'); return; }
+        const newOrder = { consumerNo: cn, customerName: name, mobile: mob, address: addr, cylinderType: cyl, price: cylinderPrices[cyl], status: 'pending', remark: rem, dscCode: null, date: new Date().toISOString(), deliveredDate: null, deliveryRemark: null };
+        const tx = db.transaction(['orders'],'readwrite');
+        tx.objectStore('orders').add(newOrder).onsuccess = () => {
+            alert('✅ ऑर्डर जमा हुआ');
+            modal.style.display = 'none';
+            ['modalConsumerNo','modalCustomerName','modalMobile','modalAddress','modalRemark'].forEach(id => document.getElementById(id).value = '');
+            const ct = db.transaction(['customers'],'readwrite');
+            ct.objectStore('customers').put({ mobile: mob, name, consumerNo: cn, lastOrder: new Date().toISOString() });
+            loadOrders(); 
+            updateStats();
+        };
+    };
+
+    // Search + Filter + Display
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsDiv = document.getElementById('suggestions');
+    searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        if (term.length < 1) { suggestionsDiv.style.display = 'none'; return; }
+        const uniqueNames = [...new Set(allOrders.map(o => o.customerName).filter(n => n))];
+        const matches = uniqueNames.filter(name => name.toLowerCase().includes(term)).slice(0,5);
+        if (matches.length) {
+            suggestionsDiv.innerHTML = matches.map(name => `<div class="suggestion-item" data-name="${name}">🔍 ${name}</div>`).join('');
+            suggestionsDiv.style.display = 'block';
+            document.querySelectorAll('.suggestion-item').forEach(item => item.onclick = () => { searchInput.value = item.dataset.name; suggestionsDiv.style.display = 'none'; document.getElementById('searchBtn').click(); });
+        } else suggestionsDiv.style.display = 'none';
+    });
+    document.getElementById('searchBtn').onclick = () => { currentSearchTerm = searchInput.value.trim().toLowerCase(); suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
+    document.getElementById('clearSearchBtn').onclick = () => { searchInput.value = ''; currentSearchTerm = ''; suggestionsDiv.style.display = 'none'; displayFilteredOrders(); };
+    document.getElementById('applyDateFilterBtn').onclick = () => { currentDateFilter = document.getElementById('dateFilterSelect').value; displayFilteredOrders(); updateStats(); };
+
+    function displayFilteredOrders() {
+        let filtered = [...allOrders];
+        filtered = filterOrdersByDate(filtered);
+        if (currentSearchTerm) filtered = filtered.filter(o => o.customerName.toLowerCase().includes(currentSearchTerm) || o.mobile.includes(currentSearchTerm) || o.consumerNo.includes(currentSearchTerm));
         if (currentFilter === 'pending') filtered = filtered.filter(o => o.status === 'pending');
         else if (currentFilter === 'processing') filtered = filtered.filter(o => o.status === 'processing');
         else if (currentFilter === 'delivered') filtered = filtered.filter(o => o.status === 'delivered');
         else if (currentFilter === 'old30') {
-            const oldSet = new Set(filtered.filter(o => isCustomerOld(o.customerName, o.mobile, filtered)).map(o => o.mobile));
+            const oldSet = new Set();
+            filtered.forEach(o => { if (isCustomerOld(o.customerName, o.mobile, filtered)) oldSet.add(o.mobile); });
             filtered = filtered.filter(o => oldSet.has(o.mobile));
         }
         filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
         renderOrders(filtered);
     }
 
-    function renderOrders(orders) {
-        const container = document.getElementById('ordersContainer');
-        if (!orders.length) {
-            container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>';
+    function makeCall(mob) { if (mob && mob.trim()) window.location.href = `tel:${mob.trim()}`; else alert('❌ नंबर नहीं'); }
+    
+    function moveToProcessing(id) { 
+        const dsc = prompt("🔑 DSC Code दें (प्रोसेसिंग के लिए):"); 
+        if (!dsc) return; 
+        const tx = db.transaction(['orders'],'readwrite'); 
+        tx.objectStore('orders').get(id).onsuccess = (e) => { 
+            const o = e.target.result; 
+            if (!o.dscCode) { 
+                o.dscCode = dsc.toUpperCase(); 
+                db.transaction(['dscCodes'],'readwrite').objectStore('dscCodes').put({ dscCode: dsc.toUpperCase() }); 
+            } 
+            if (o.dscCode !== dsc.toUpperCase()) return alert('❌ DSC Code गलत!'); 
+            o.status = 'processing'; 
+            tx.objectStore('orders').put(o); 
+            alert('✅ ऑर्डर प्रोसेसिंग में भेज दिया'); 
+            loadOrders(); 
+            updateStats(); 
+        }; 
+    }
+    
+    function moveToDelivered(id) {
+        const confirmDelivery = confirm("⚠️ क्या आप सच में इस ऑर्डर को डिलीवर करना चाहते हैं?");
+        if (!confirmDelivery) {
+            alert("❌ डिलीवरी रद्द कर दी गई।");
             return;
         }
-        container.innerHTML = orders.map(order => {
-            const isOld = isCustomerOld(order.customerName, order.mobile, orders);
-            return `<div class="order-item ${isOld ? 'old-customer' : ''}">
-                <div class="order-header">
-                    <span><strong>${order.customerName}</strong> ${isOld ? '<span class="old-badge">25+ दिन</span>' : ''}</span>
-                    <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर'}</span>
-                </div>
-                <div class="order-details">
-                    <div><strong>🆔 कंज्यूमर:</strong> ${order.consumerNo}</div>
-                    <div><strong>📞 मोबाइल:</strong> ${order.mobile}</div>
-                    <div><strong>📍 पता:</strong> ${order.address}</div>
-                    <div><strong>🎯 सिलेंडर:</strong> ${order.cylinderType} - ₹${order.price}</div>
-                    ${order.dscCode ? `<div><strong>🔑 DSC:</strong> ${order.dscCode}</div>` : ''}
-                    ${order.remark ? `<div><strong>📝 नोट:</strong> ${order.remark}</div>` : ''}
-                </div>
-                <div class="action-btns">
-                    ${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}">🚚 प्रोसेसिंग</button>` : ''}
-                    ${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}">✅ डिलीवर</button>` : ''}
-                    <button class="action-btn call-btn" data-mobile="${order.mobile}">📞 कॉल</button>
-                    ${currentUser?.role === 'admin' ? `<button class="action-btn delete-btn" data-id="${order.id}">🗑️ डिलीट</button>` : ''}
-                </div>
-            </div>`;
-        }).join('');
-
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.onclick = () => {
-                const id = parseInt(btn.dataset.id);
-                if (btn.classList.contains('processing-btn')) moveToProcessing(id);
-                else if (btn.classList.contains('deliver-btn')) moveToDelivered(id);
-                else if (btn.classList.contains('delete-btn')) deleteOrder(id);
-                else if (btn.dataset.mobile) window.location.href = `tel:${btn.dataset.mobile}`;
-            };
-        });
-    }
-
-    function moveToProcessing(id) {
-        const dsc = prompt("DSC Code डालें:");
-        if (!dsc) return;
-        const tx = db.transaction(['orders'], 'readwrite');
+        const deliveryRemark = prompt("📝 डिलीवरी रिमार्क लिखें (वैकल्पिक):", "");
+        if (deliveryRemark === null) {
+            alert("❌ डिलीवरी रद्द कर दी गई।");
+            return;
+        }
+        const tx = db.transaction(['orders'],'readwrite');
         tx.objectStore('orders').get(id).onsuccess = (e) => {
             const o = e.target.result;
-            o.status = 'processing';
-            o.dscCode = dsc.toUpperCase();
-            tx.objectStore('orders').put(o);
-            alert('✅ प्रोसेसिंग में भेज दिया');
-            loadOrders();
-        };
-    }
-
-    function moveToDelivered(id) {
-        if (!confirm("क्या आप इस ऑर्डर को डिलीवर करना चाहते हैं?")) return;
-        const remark = prompt("डिलीवरी रिमार्क (वैकल्पिक):", "");
-        const tx = db.transaction(['orders'], 'readwrite');
-        tx.objectStore('orders').get(id).onsuccess = (e) => {
-            const o = e.target.result;
+            if (o.status !== 'processing') {
+                alert("❌ केवल प्रोसेसिंग वाला ऑर्डर डिलीवर हो सकता है।");
+                return;
+            }
             o.status = 'delivered';
             o.deliveredDate = new Date().toISOString();
-            o.deliveryRemark = remark || '';
+            o.deliveryRemark = deliveryRemark || '';
             tx.objectStore('orders').put(o);
-            alert('✅ ऑर्डर डिलीवर कर दिया गया');
+            alert("✅ ऑर्डर सफलतापूर्वक डिलीवर हो गया!");
             loadOrders();
             updateStats();
         };
     }
+    
+    function deleteOrder(id) { if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन'); if (confirm('हटाएं?')) { db.transaction(['orders'],'readwrite').objectStore('orders').delete(id).onsuccess = () => { loadOrders(); updateStats(); }; } }
 
-    function deleteOrder(id) {
-        if (currentUser?.role !== 'admin') return alert('सिर्फ एडमिन डिलीट कर सकता है');
-        if (confirm('ऑर्डर डिलीट करें?')) {
-            db.transaction(['orders'], 'readwrite').objectStore('orders').delete(id).onsuccess = () => {
-                loadOrders(); updateStats();
-            };
-        }
+    function loadOrders() { if (!db) return; db.transaction(['orders'],'readonly').objectStore('orders').getAll().onsuccess = (e) => { allOrders = e.target.result || []; displayFilteredOrders(); updateStats(); }; }
+    
+    function renderOrders(orders) {
+        const container = document.getElementById('ordersContainer');
+        if (!orders.length) { container.innerHTML = '<div class="empty-state">📭 कोई ऑर्डर नहीं</div>'; return; }
+        container.innerHTML = orders.map(order => {
+            const isOld = isCustomerOld(order.customerName, order.mobile, orders);
+            const dscDisplay = order.dscCode ? `🔑 DSC: ${escapeHtml(order.dscCode)}` : '🔑 DSC: ⏳ अभी नहीं डाला';
+            return `<div class="order-item ${isOld ? 'old-customer' : ''}">
+                <div class="order-header">
+                    <span><strong>👤 ${escapeHtml(order.customerName)}</strong> ${isOld ? '<span class="old-badge">⚠️ 25+ दिन</span>' : ''}</span>
+                    <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
+                </div>
+                <div class="order-details">
+                    <div><strong>🆔 कंज्यूमर:</strong> <span class="consumer-mob">${escapeHtml(order.consumerNo)}</span></div>
+                    <div>${dscDisplay}</div>
+                    <div><strong>📞 मोबाइल:</strong> <span class="consumer-mob">${escapeHtml(order.mobile)}</span></div>
+                    <div><strong>📍 पता:</strong> ${escapeHtml(order.address)}</div>
+                    <div><strong>🎯 सिलेंडर:</strong> ${order.cylinderType} - ₹${order.price}</div>
+                    ${order.remark ? `<div><strong>📝 नोट:</strong> ${escapeHtml(order.remark)}</div>` : ''}
+                    ${order.deliveryRemark ? `<div><strong>✅ डिलीवरी रिमार्क:</strong> ${escapeHtml(order.deliveryRemark)}</div>` : ''}
+                    <div><strong>📅 ऑर्डर तारीख:</strong> ${new Date(order.date).toLocaleString('hi-IN')}</div>
+                    ${order.deliveredDate ? `<div><strong>📅 डिलीवरी तारीख:</strong> ${new Date(order.deliveredDate).toLocaleString('hi-IN')}</div>` : ''}
+                </div>
+                <div class="action-btns">
+                    ${order.status === 'pending' ? `<button class="action-btn processing-btn" data-id="${order.id}" data-action="processing">🚚 प्रोसेसिंग</button>` : ''}
+                    ${order.status === 'processing' ? `<button class="action-btn deliver-btn" data-id="${order.id}" data-action="deliver">✅ डिलीवर</button>` : ''}
+                    <button class="action-btn call-btn" data-mobile="${order.mobile}" data-action="call">📞 Call</button>
+                    ${currentUser?.role === 'admin' ? `<button class="action-btn delete-btn" data-id="${order.id}" data-action="delete">🗑️ डिलीट</button>` : ''}
+                </div>
+            </div>`;
+        }).join('');
+        document.querySelectorAll('.action-btn').forEach(btn => btn.onclick = () => { const act = btn.dataset.action; if (act === 'processing') moveToProcessing(parseInt(btn.dataset.id)); else if (act === 'deliver') moveToDelivered(parseInt(btn.dataset.id)); else if (act === 'delete') deleteOrder(parseInt(btn.dataset.id)); else if (act === 'call') makeCall(btn.dataset.mobile); });
     }
 
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;')); }
+    
     function updateStats() {
-        const filtered = filterOrdersByDate([...allOrders]);
+        if (!db) return;
+        let filtered = filterOrdersByDate([...allOrders]);
         document.getElementById('totalDelivered').innerText = filtered.filter(o => o.status === 'delivered').length;
         document.getElementById('totalOrders').innerText = filtered.length;
         document.getElementById('totalConsumers').innerText = new Set(filtered.map(o => o.mobile)).size;
@@ -593,28 +1137,57 @@
         document.getElementById('totalOldCustomers').innerText = getUniqueOldCustomersCount(filtered);
     }
 
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.onclick = () => {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            displayFilteredOrders();
-        };
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.onclick = () => { document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentFilter = btn.dataset.filter; displayFilteredOrders(); });
+
+    // Backup & Restore Events
+    document.getElementById('backupBtn')?.addEventListener('click', exportBackup);
+    document.getElementById('restoreBtn')?.addEventListener('click', () => document.getElementById('restoreFileInput').click());
+    document.getElementById('restoreFileInput')?.addEventListener('change', (e) => { 
+        if(e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const backupData = JSON.parse(ev.target.result);
+                    restoreDataMerge(backupData, () => {});
+                } catch(err) { alert('❌ गलत फाइल'); }
+            };
+            reader.readAsText(e.target.files[0]);
+        }
+        e.target.value = '';
     });
-
-    document.getElementById('restoreBtn').onclick = () => document.getElementById('restoreFileInput').click();
-    document.getElementById('restoreFileInput').onchange = (e) => {
-        if (e.target.files[0]) restoreDataFromJson(e.target.files[0], (success) => {
-            if (success) { loadOrders(); updateStats(); if (currentUser?.role === 'admin') loadAgentList(); }
-        });
+    
+    document.getElementById('restoreBtnLogin')?.addEventListener('click', () => document.getElementById('restoreFileInputLogin').click());
+    document.getElementById('restoreFileInputLogin')?.addEventListener('change', (e) => { 
+        if(e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                try {
+                    const backupData = JSON.parse(ev.target.result);
+                    restoreDataMerge(backupData, () => {});
+                } catch(err) { alert('❌ गलत फाइल'); }
+            };
+            reader.readAsText(e.target.files[0]);
+        }
         e.target.value = '';
-    };
-
-    document.getElementById('restoreBtnLogin').onclick = () => document.getElementById('restoreFileInputLogin').click();
-    document.getElementById('restoreFileInputLogin').onchange = (e) => {
-        if (e.target.files[0]) restoreDataFromJson(e.target.files[0], () => {});
-        e.target.value = '';
-    };
+    });
+    
+    // Hidden file input for restore
+    const restoreInput = document.createElement('input');
+    restoreInput.type = 'file';
+    restoreInput.accept = '.json';
+    restoreInput.id = 'restoreFileInput';
+    restoreInput.style.display = 'none';
+    document.body.appendChild(restoreInput);
+    
+    const restoreInputLogin = document.getElementById('restoreFileInputLogin');
+    if(!document.getElementById('restoreFileInput')) {
+        const newRestoreInput = document.createElement('input');
+        newRestoreInput.type = 'file';
+        newRestoreInput.accept = '.json';
+        newRestoreInput.id = 'restoreFileInput';
+        newRestoreInput.style.display = 'none';
+        document.body.appendChild(newRestoreInput);
+    }
 </script>
 </body>
 </html>
