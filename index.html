@@ -489,7 +489,7 @@
         <div class="stat-card"><small>📦 डिलीवर</small><h3 id="totalDelivered">0</h3></div>
         <div class="stat-card"><small>👥 कंज्यूमर</small><h3 id="totalConsumers">0</h3></div>
         <div class="stat-card"><small>🔑 DSC</small><h3 id="totalDscCodes">0</h3></div>
-        <div class="stat-card warning"><small>⚠️ 30+ कस्टमर</small><h3 id="totalOldCustomers">0</h3></div>
+        <div class="stat-card warning"><small>⚠️ 25+ कस्टमर</small><h3 id="totalOldCustomers">0</h3></div>
         <div class="stat-card"><small>📊 कुल</small><h3 id="totalOrders">0</h3></div>
     </div>
 
@@ -608,7 +608,7 @@
         if (customerOrders.length === 0) return false;
         const latestOrder = customerOrders.reduce((latest, current) => new Date(current.date) > new Date(latest.date) ? current : latest);
         const diffDays = Math.ceil((new Date() - new Date(latestOrder.date)) / (1000 * 60 * 60 * 24));
-        return diffDays >= 30;
+        return diffDays >= 25;
     }
 
     function getUniqueOldCustomersCount(ordersList) {
@@ -622,7 +622,7 @@
         let oldCount = 0;
         for (let customer of uniqueCustomers.values()) {
             const diffDays = Math.ceil((new Date() - new Date(customer.date)) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 30) oldCount++;
+            if (diffDays >= 25) oldCount++;
         }
         return oldCount;
     }
@@ -891,7 +891,7 @@
             const dscDisplay = order.dscCode ? `🔑 DSC: ${escapeHtml(order.dscCode)}` : '🔑 DSC: ⏳ अभी नहीं डाला';
             return `<div class="order-item ${isOld ? 'old-customer' : ''}">
                 <div class="order-header">
-                    <span><strong>👤 ${escapeHtml(order.customerName)}</strong> ${isOld ? '<span class="old-badge">⚠️ 30+ दिन</span>' : ''}</span>
+                    <span><strong>👤 ${escapeHtml(order.customerName)}</strong> ${isOld ? '<span class="old-badge">⚠️ 25+ दिन</span>' : ''}</span>
                     <span class="status status-${order.status}">${order.status === 'pending' ? '⏳ पेंडिंग' : (order.status === 'processing' ? '🚚 प्रोसेसिंग' : '✅ डिलीवर')}</span>
                 </div>
                 <div class="order-details">
